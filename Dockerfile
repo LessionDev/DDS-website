@@ -1,10 +1,14 @@
 FROM php:8.2-apache
 
-# active mod rewrite (utile pour PHP sites)
+# désactive les MPM conflictuels
+RUN a2dismod mpm_event || true
+RUN a2dismod mpm_worker || true
+RUN a2enmod mpm_prefork
+
 RUN a2enmod rewrite
 
-# copie ton site dans le serveur
 COPY . /var/www/html/
 
-# permissions
 RUN chown -R www-data:www-data /var/www/html
+
+EXPOSE 80
