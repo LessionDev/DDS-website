@@ -1,6 +1,13 @@
 <?php
 session_start();
-require "config.php";
+// AVANT : cette page ouvrait elle-même une connexion à la base
+// ("require config.php") et faisait sa propre requête SQL pour
+// vérifier le mot de passe. MAINTENANT : elle appelle l'API
+// (API/login.php), qui est LA SEULE à toucher la base, et qui gère
+// déjà le anti-brute-force (5 essais / 15 min). Ça évite d'avoir deux
+// bouts de code différents (site + launcher) qui vérifient un mot de
+// passe chacun à leur façon.
+require "api_client.php";
 require "safe_redirect.php";
 
 // AVANT : $location = $_GET['cameFrom'] était utilisé tel quel dans un
@@ -9,29 +16,27 @@ $location = safe_redirect_target($_GET['cameFrom'] ?? null);
 $classeMatch = 'Taken';
 
 if ($_POST) {
-    $username = $_POST["username"];
-    $password = $_POST["password"];
+    $result = api_request("login.php", "POST", [
+        "username" => $_POST["username"] ?? "",
+        "password" => $_POST["password"] ?? "",
+    ]);
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username=?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-
-    $user = $stmt->get_result()->fetch_assoc();
-
-    if ($user && password_verify($password, $user["password"])) {
+    if (!empty($result["success"])) {
         // AVANT : pas de regénération d'ID de session après connexion.
         // Ça permet une attaque de "session fixation" : un attaquant qui
         // connaît l'ID de session AVANT la connexion peut ensuite
         // l'utiliser pour se faire passer pour l'utilisateur connecté.
         session_regenerate_id(true);
 
-        $_SESSION["user_id"] = $user["id"];
-        $_SESSION["username"] = $user["username"];
-        $_SESSION['user_status'] = $user['status'];
+        $_SESSION["user_id"] = $result["id"];
+        $_SESSION["username"] = $result["username"];
+        $_SESSION["user_status"] = $result["status"];
 
         header("Location: $location");
         exit; // AVANT : pas de exit -> le HTML de la page continuait de s'afficher/s'exécuter après la redirection.
 
+    } elseif (($result["message"] ?? "") === "Too many attempts, try again later.") {
+        $classeMatch = 'Taken active locked';
     } else {
         $classeMatch = 'Taken active';
     }

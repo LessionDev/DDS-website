@@ -5,7 +5,9 @@
 // ne doivent exister que sur un environnement de développement local,
 // jamais sur le serveur exposé publiquement.
 session_start();
-require "config.php";
+// AVANT : cette page interrogeait la base directement. MAINTENANT :
+// elle demande à l'API la liste des articles de l'utilisateur connecté.
+require "api_client.php";
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
@@ -13,15 +15,12 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // AVANT : $id = $_GET['id'] venait de l'URL -> n'importe qui pouvait
-// lister les articles de N'IMPORTE QUEL auteur en changeant l'ID, et la
-// requête était vulnérable à l'injection SQL. On affiche maintenant
-// uniquement les articles de l'utilisateur connecté, via une requête préparée.
-$id = $_SESSION['user_id'];
-
-$stmt = $conn->prepare("SELECT * FROM posts WHERE author_id = ?");
-$stmt->bind_param("i", $id);
-$stmt->execute();
-$result = $stmt->get_result();
+// lister les articles de N'IMPORTE QUEL auteur en changeant l'ID. On
+// n'envoie à l'API QUE l'id venant de la session ($_SESSION), jamais
+// une valeur fournie par le visiteur : impossible de le manipuler
+// depuis le navigateur puisque cet appel se fait côté serveur.
+$result = api_request("posts.php", "GET", ["author_id" => $_SESSION['user_id']]);
+$posts = $result["posts"] ?? [];
 ?>
 <!DOCTYPE html>
 <html>
@@ -41,9 +40,7 @@ $result = $stmt->get_result();
         <link rel="apple-touch-icon" sizes="152x152" href="style/res/Logo152.png">
     </head>
     <body>
-        <?php
-            while ($row = $result->fetch_assoc()) {
-        ?>
+        <?php foreach ($posts as $row): ?>
         <div class="container">
             <div class="title">
                 <!-- AVANT : le titre était affiché sans échappement -> un titre
@@ -51,9 +48,7 @@ $result = $stmt->get_result();
                 <h2 class="articleLink"><?php echo htmlspecialchars($row['title']); ?></h2>
             </div>
         </div>
-        <?php
-        }
-        ?>     
+        <?php endforeach; ?>     
     </body>
     <footer>
     </footer>

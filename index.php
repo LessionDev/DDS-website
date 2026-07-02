@@ -1,6 +1,9 @@
 <?php
 session_start();
-require "config.php"; 
+// AVANT : require "config.php" ouvrait une connexion à la base ici,
+// alors que cette page n'a jamais fait la moindre requête SQL — elle
+// ne fait que lire $_SESSION. MAINTENANT : plus aucune page en dehors
+// du dossier API/ n'a accès à la base de données.
 ?>
 
 <!DOCTYPE html>

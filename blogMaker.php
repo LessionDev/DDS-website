@@ -1,6 +1,11 @@
 <?php
 session_start();
-require "config.php";
+// AVANT : cette page ouvrait la base et faisait elle-même le
+// "INSERT INTO posts". MAINTENANT : elle continue de gérer l'upload
+// du fichier (ça, ça reste local au serveur qui reçoit le fichier),
+// mais l'enregistrement en base passe par l'API (API/posts_create.php),
+// avec un secret interne pour prouver que l'appel vient bien du site.
+require "api_client.php";
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
@@ -80,20 +85,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         move_uploaded_file($tmpPath, $destinationDir . '/' . $imageName);
     }
 
-    // AVANT : requête construite par concaténation de chaînes ->
-    // injection SQL possible via title/content/destination.
-    $stmt = $conn->prepare(
-        "INSERT INTO posts (title, content, author_id, image, blogDestination)
-         VALUES (?, ?, ?, ?, ?)"
-    );
-    $stmt->bind_param("ssiss", $title, $content, $author_id, $imageName, $destination);
+    // AVANT : "INSERT INTO posts" construit par concaténation de
+    // chaînes ici même -> injection SQL possible via title/content.
+    // MAINTENANT : on demande à l'API de créer l'article. Le "true"
+    // final envoie le secret interne (X-Internal-Secret) pour prouver
+    // que l'appel vient du serveur du site et pas d'un inconnu qui
+    // appellerait /API/posts_create.php directement.
+    $result = api_request("posts_create.php", "POST", [
+        "title" => $title,
+        "content" => $content,
+        "destination" => $destination,
+        "author_id" => $author_id,
+        "image" => $imageName,
+    ], true);
 
-    if ($stmt->execute()) {
+    if (!empty($result["success"])) {
         $message = "Article posted successfully";
     } else {
-        // AVANT : mysqli_error($conn) était affiché à l'utilisateur ->
-        // ça peut révéler la structure de la base de données.
-        error_log("blogMaker insert failed: " . $stmt->error);
+        error_log("blogMaker: API insert failed: " . json_encode($result));
         $message = "Something went wrong, please try again.";
     }
 }
