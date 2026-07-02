@@ -2,10 +2,10 @@
 
 
 $conn = new mysqli(
-    "sql208.infinityfree.com",   // HOST
-    "if0_41755681",              // USERNAME
-    "DemoniChoiceWeb",          // PASSWORD
-    "if0_41755681_demonichoicedb"        // DATABASE NAME
+    "hayabusa.proxy.rlwy.net:47552",   // HOST
+    "root",              // USERNAME
+    "ZMLMjPaLRqKtdZpefRaNwVKDYSgzKMWW",          // PASSWORD
+    "railway"        // DATABASE NAME
 );
 
 
