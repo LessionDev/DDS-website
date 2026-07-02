@@ -5,8 +5,8 @@ require "config.php";
 
 <!DOCTYPE html>
 <html>
-	<head>
-    	<meta charset="UTF-8">
+        <head>
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>DemoniChoice</title>
         <link rel="stylesheet" href="style/style.css" > 
@@ -26,28 +26,30 @@ require "config.php";
     </head>
     <body>
         <nav>
-        	<div class="navbar">
-			<div class="navbarMenu">
-				<img class="logo" src="style/res/Logo.png">
-				<ul>
-					<li><a href="blog.php">Blog</a></li>
+                <div class="navbar">
+                        <div class="navbarMenu">
+                                <img class="logo" src="style/res/Logo.png">
+                                <ul>
+                                        <li><a href="blog.php">Blog</a></li>
                     <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
                     <li><a href="#">Shop</a></li>
-                	<li><a href="#">Contact Us</a></li>                          
-				</ul>
-				<ul>
-					<?php if (!isset($_SESSION["user_id"])): ?>
+                        <li><a href="#">Contact Us</a></li>                          
+                                </ul>
+                                <ul>
+                                        <?php if (!isset($_SESSION["user_id"])): ?>
                         <li><a class="btn" href="login.php">Connect <i class='bx bx-chevron-right i' ></i> </a></li>          
                     <?php else: ?>
-                        <li><a href="dashboard.php"><?php echo $_SESSION["username"]; ?></a></li>
+                        <!-- AVANT : echo $_SESSION["username"] sans échappement -> XSS stocké
+                             possible via un pseudo malveillant créé à l'inscription. -->
+                        <li><a href="dashboard.php"><?php echo htmlspecialchars($_SESSION["username"]); ?></a></li>
                         <li><a class="btn o" href="logout.php">Logout<i class='bx bx-log-out'></i> </a></li>
                     <?php endif; ?>
                         <li><a class="playBtnNav btn" href="#Download">Play !</a></li>
-				</ul>
-			</div>
-			<div class="icon">
-				<i class="bx bx-menu openBtn Btn"></i>
-			</div>
+                                </ul>
+                        </div>
+                        <div class="icon">
+                                <i class="bx bx-menu openBtn Btn"></i>
+                        </div>
             <div class="logoDiv">
                 <img class="logo" src="style/res/Logo.png">
             </div>
@@ -55,31 +57,31 @@ require "config.php";
             </div>
             <div class="menu">
                 <div class="topMenu">
-                	<div class="icon">
-						<i class="bx bx-x closeBtn Btn"></i>
-					</div>
+                        <div class="icon">
+                                                <i class="bx bx-x closeBtn Btn"></i>
+                                        </div>
                     <div class="logoDiv">
                         <img class="logo" src="style/res/Logo.png">
                     </div>
                     <div class="icon">
                     </div>
-            	</div>
-                	<ul>
-                    	<li><a href="blog.php">Blog</a></li>
+                </div>
+                        <ul>
+                        <li><a href="blog.php">Blog</a></li>
                         <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
                         <li><a href="#">Shop</a></li>
                         <li><a href="#">Contact Us</a></li>
                     </ul>
-					<ul>
-						<?php if (!isset($_SESSION["user_id"])): ?>
+                                        <ul>
+                                                <?php if (!isset($_SESSION["user_id"])): ?>
                             <li><a class="btn connect-btn" href="login.php">Connect <i class='bx bx-chevron-right i' ></i> </a></li>
                         <?php else: ?>
-                            <li><a href="dashboard.php"><?php echo $_SESSION["username"]; ?></a></li>
+                            <li><a href="dashboard.php"><?php echo htmlspecialchars($_SESSION["username"]); ?></a></li>
                             <li><a class="btn" href="logout.php">Logout <i class='bx bx-log-out o' ></i> </a></li>
                         <?php endif; ?>
                         <li><a class="playBtnNav btn" href="#Download"> Play !</a></li>
-					</ul>
-				</div>
+                                        </ul>
+                                </div>
             </div>
         </nav>
         <div class="HomeDiv">

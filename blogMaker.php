@@ -1,57 +1,100 @@
 <?php
 session_start();
-include "config.php";
-
-$author = $_GET['author'];
+require "config.php";
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
+    exit; // AVANT : pas de exit -> le script continuait même sans session.
 }
 
 if ($_SESSION['user_status'] !== "author" && $_SESSION['user_status'] !== "admin") {
     header("Location: index.php");
+    exit; // AVANT : pareil ici -> un simple membre pouvait quand même publier un article.
 }
+
+// AVANT : $author = $_GET['author'] venait de l'URL -> n'importe quel
+// auteur pouvait publier un article au nom de QUELQU'UN D'AUTRE en
+// changeant juste "?author=12" dans le lien. L'auteur doit TOUJOURS venir
+// de la session, jamais d'une valeur fournie par le visiteur.
+$author_id = $_SESSION['user_id'];
+
+$message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $title = $_POST['title'];
+    $title = trim($_POST['title'] ?? '');
+    $content = trim($_POST['content'] ?? '');
+    $destinationRaw = trim($_POST['destination'] ?? '');
 
-    $content = $_POST['content'];
-    
-    $destination = $_POST['destination'];
-
-    $author_id = $author;
-
-    $name = $_FILES['image']['name'];
-
-    $temp_location = $_FILES['image']['tmp_name'];
-
-    $our_location = "../style/res/blog/posts/<?= $destination ?>/";
-
-    if (!empty($name)) {
-
-        move_uploaded_file($temp_location, $our_location . $name);
-
-    }
-
-    if (empty($title) || empty($content)) {
-
+    if (empty($title) || empty($content) || empty($destinationRaw)) {
         die("Please fill the necessary informations.");
-
     }
 
-    $sql = "INSERT INTO posts (title, content, author_id, image, blogDestination)
+    // AVANT : $destination allait tel quel dans un chemin de fichier
+    // ("../style/res/blog/posts/$destination/"). Une valeur comme
+    // "../../../../var/www/html" (path traversal) permettait d'écrire
+    // des fichiers n'importe où sur le serveur. On restreint maintenant
+    // à un nom de dossier simple (lettres/chiffres/-/_).
+    if (!preg_match('/^[a-zA-Z0-9_-]{1,50}$/', $destinationRaw)) {
+        die("Invalid destination.");
+    }
+    $destination = $destinationRaw;
 
-            VALUES ('$title', '$content', '$author_id', '$name', '$destination')";
+    $imageName = null;
 
-    $result = mysqli_query($conn, $sql);
+    if (!empty($_FILES['image']['name'])) {
+        $tmpPath = $_FILES['image']['tmp_name'];
+        $originalName = $_FILES['image']['name'];
 
-    if ($result) {     
+        // AVANT : aucune vérification -> on pouvait envoyer un fichier
+        // "shell.php" à la place d'une image. S'il atterrit dans un dossier
+        // servi par le web, l'attaquant obtient l'exécution de code sur
+        // TON serveur. On vérifie maintenant :
+        // 1) le vrai type MIME du contenu (pas juste l'extension du nom,
+        //    qui est fournie par le client et donc falsifiable),
+        // 2) qu'il s'agit bien d'une image.
+        $allowedMime = [
+            'image/jpeg' => 'jpg',
+            'image/png'  => 'png',
+            'image/gif'  => 'gif',
+            'image/webp' => 'webp',
+        ];
+
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($tmpPath);
+
+        if (!isset($allowedMime[$mime])) {
+            die("Only image files (jpg, png, gif, webp) are allowed.");
+        }
+
+        // AVANT : le fichier gardait son nom d'origine, fourni par le
+        // client -> collisions, ou nom malicieux (ex: "../../x.php").
+        // On génère un nom aléatoire avec la bonne extension.
+        $imageName = bin2hex(random_bytes(16)) . '.' . $allowedMime[$mime];
+
+        $destinationDir = realpath(__DIR__ . '/style/res/blog/posts') . '/' . $destination;
+        if (!is_dir($destinationDir)) {
+            mkdir($destinationDir, 0755, true);
+        }
+
+        move_uploaded_file($tmpPath, $destinationDir . '/' . $imageName);
+    }
+
+    // AVANT : requête construite par concaténation de chaînes ->
+    // injection SQL possible via title/content/destination.
+    $stmt = $conn->prepare(
+        "INSERT INTO posts (title, content, author_id, image, blogDestination)
+         VALUES (?, ?, ?, ?, ?)"
+    );
+    $stmt->bind_param("ssiss", $title, $content, $author_id, $imageName, $destination);
+
+    if ($stmt->execute()) {
         $message = "Article posted successfully";
-        
-    } else {                   
-        $message = "Error: " . mysqli_error($conn);
-        
+    } else {
+        // AVANT : mysqli_error($conn) était affiché à l'utilisateur ->
+        // ça peut révéler la structure de la base de données.
+        error_log("blogMaker insert failed: " . $stmt->error);
+        $message = "Something went wrong, please try again.";
     }
 }
 ?>
@@ -63,20 +106,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <title>DemoniChoice</title>
         <link rel="stylesheet" href="style/blog.css" > 
         <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">    
-        <!-- manifest -->
         <link rel="manifest" href="site.webmanifest">
-        <!-- icones -->
         <link rel="icon" type="image/png" sizes="32x32" href="style/res/Logo32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="style/res/Logo16.png">
         <link rel="shortcut icon" href="style/res/Logo.ico">
-        <!-- fallback favicon -->
         <link rel="icon" type="image/png" sizes="32x32" href="style/res/Logo.png">
-        <!-- iOS -->
         <link rel="apple-touch-icon" sizes="180x180" href="style/res/Logo180.png">
         <link rel="apple-touch-icon" sizes="167x167" href="style/res/Logo167.png">
         <link rel="apple-touch-icon" sizes="152x152" href="style/res/Logo152.png">
     </head>
     <body>
+        <?php if ($message): ?><p><?= htmlspecialchars($message) ?></p><?php endif; ?>
         <form method="post" enctype="multipart/form-data">
             <input type="text" name="title" placeholder="The title of your article">
             <textarea name="content" placeholder="Type your article here"></textarea>

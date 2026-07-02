@@ -1,12 +1,15 @@
 <?php
 session_start();
 require "config.php";
+require "safe_redirect.php";
 
-$location = $_GET['cameFrom'];
+// AVANT : $location = $_GET['cameFrom'] était utilisé tel quel dans un
+// header("Location: ...") -> "open redirect" (voir safe_redirect.php).
+$location = safe_redirect_target($_GET['cameFrom'] ?? null);
 $classeMatch = 'Taken';
 
 if ($_POST) {
-	$username = $_POST["username"];
+    $username = $_POST["username"];
     $password = $_POST["password"];
 
     $stmt = $conn->prepare("SELECT * FROM users WHERE username=?");
@@ -16,16 +19,21 @@ if ($_POST) {
     $user = $stmt->get_result()->fetch_assoc();
 
     if ($user && password_verify($password, $user["password"])) {
+        // AVANT : pas de regénération d'ID de session après connexion.
+        // Ça permet une attaque de "session fixation" : un attaquant qui
+        // connaît l'ID de session AVANT la connexion peut ensuite
+        // l'utiliser pour se faire passer pour l'utilisateur connecté.
+        session_regenerate_id(true);
+
         $_SESSION["user_id"] = $user["id"];
         $_SESSION["username"] = $user["username"];
         $_SESSION['user_status'] = $user['status'];
 
         header("Location: $location");
-        
+        exit; // AVANT : pas de exit -> le HTML de la page continuait de s'afficher/s'exécuter après la redirection.
+
     } else {
-        
         $classeMatch = 'Taken active';
-     
     }
 }
 ?>
@@ -37,15 +45,11 @@ if ($_POST) {
         <title>DemoniChoice</title>
         <link rel="stylesheet" href="style/log.css" > 
         <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">    
-        <!-- manifest -->
         <link rel="manifest" href="site.webmanifest">
-        <!-- icones -->
         <link rel="icon" type="image/png" sizes="32x32" href="style/res/Logo32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="style/res/Logo16.png">
         <link rel="shortcut icon" href="style/res/Logo.ico">
-        <!-- fallback favicon -->
         <link rel="icon" type="image/png" sizes="32x32" href="style/res/Logo.png">
-        <!-- iOS -->
         <link rel="apple-touch-icon" sizes="180x180" href="style/res/Logo180.png">
         <link rel="apple-touch-icon" sizes="167x167" href="style/res/Logo167.png">
         <link rel="apple-touch-icon" sizes="152x152" href="style/res/Logo152.png">
@@ -64,7 +68,9 @@ if ($_POST) {
                 </div>  
                 <div class="link">
                     Don't Have An Account?
-                    <a href="register.php?cameFrom=<?= $location ?>">   Sign up !</a>  
+                    <!-- AVANT : $location était affiché sans échappement -> une valeur comme
+                         "><script>...</script> pouvait injecter du HTML/JS (XSS reflected). -->
+                    <a href="register.php?cameFrom=<?= htmlspecialchars($location) ?>">   Sign up !</a>  
                 </div>
             </form>
         </div>
