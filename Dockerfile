@@ -1,14 +1,9 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
-# désactive les MPM conflictuels
-RUN a2dismod mpm_event || true
-RUN a2dismod mpm_worker || true
-RUN a2enmod mpm_prefork
+WORKDIR /app
 
-RUN a2enmod rewrite
+COPY . /app
 
-COPY . /var/www/html/
+EXPOSE 8080
 
-RUN chown -R www-data:www-data /var/www/html
-
-EXPOSE 80
+CMD ["php", "-S", "0.0.0.0:8080"]
