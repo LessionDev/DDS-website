@@ -36,7 +36,7 @@ $row = mysqli_fetch_assoc($result);
 				<img class="logo" src="../style/res/demonichoice/Logo.png">
 				<ul>
 					<li><a href="home.php">Home</a></li>
-                    <li><a href="#">Wiki</a></li>                            
+                    <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
                     <li><a href="shop.php">Shop</a></li>
                 	<li><a href="contact.php">Contact Us</a></li>                          
 				</ul>
@@ -70,7 +70,7 @@ $row = mysqli_fetch_assoc($result);
             	</div>
                 	<ul>
                     	<li><a href="home.php">Home</a></li>
-                        <li><a href="#">Wiki</a></li>                            
+                        <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
                         <li><a href="shop.php">Shop</a></li>
                         <li><a href="contact.php">Contact Us</a></li>
                     </ul>
