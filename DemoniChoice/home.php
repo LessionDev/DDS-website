@@ -131,7 +131,7 @@ require "../config.php";
                         </div>
                         <div class="noteDiv">
                             <li>Note : you need Java installed on your computer, if you need help contact the</li>
-                            <a class="supportLink" href=#>support</a>
+                            <a class="supportLink" href="contact.php">support</a>
                         </div>
                     </ul>
                 </div>                                              
