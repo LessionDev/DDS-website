@@ -1,10 +1,13 @@
-FROM php:8.2-cli
+FROM php:8.2-apache
 
-WORKDIR /app
+WORKDIR /var/www/html
 
-COPY . /app
+COPY . /var/www/html
 
-# installe l’extension mysqli + pdo mysql
+# active mysqli + pdo mysql
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-CMD php -S 0.0.0.0:$PORT
+# active rewrite (optionnel mais utile)
+RUN a2enmod rewrite
+
+EXPOSE 80
