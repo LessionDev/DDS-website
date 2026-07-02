@@ -17,6 +17,8 @@ function safe_redirect_target(?string $location, string $default = "index.php"):
         $location === null ||
         $location === "" ||
         $location[0] !== "/" ||
+        $location[0] !== "./" ||
+        $location[0] !== "../" ||
         str_starts_with($location, "//") ||
         preg_match('#^https?:#i', $location)
     ) {
