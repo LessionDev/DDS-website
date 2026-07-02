@@ -1,0 +1,531 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap'); 
+
+* {
+  transition: all 0.3s ease;
+}
+
+html { 
+    scroll-behavior: smooth; 
+} 
+
+body { 
+    margin: 0; 
+    padding: 0;
+    background-color: #141414; 
+    font-family: "Ubuntu", sans-serif; 
+} 
+
+body.no-scroll { 
+    overflow: hidden; 
+}
+
+a:hover {
+    color: #7F7D9C;
+}
+
+/* Navbar */
+
+.navbar {
+	display: flex;
+	text-align: center;
+	align-items: center;
+	justify-content: space-between;
+	height: 60px;
+	padding: 0 15px;
+    padding-top: 1.5rem;
+}
+
+.navbarMenu {
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+
+.navbarMenu ul:last-child {
+	margin-left: auto;
+}
+
+.logo {
+	width: 60px;
+    height: 60px;
+    padding-left: 1.5rem;
+}
+
+.logoDiv, .icon{
+	display: none;
+}
+
+ul {
+	display: flex;
+	align-items: center;
+	list-style: none;
+	margin: 0;
+	padding: 1rem;
+}
+
+li a {
+    text-decoration: none;
+    color: white;
+    padding: 1.5rem;
+}
+
+.navbarMenu li a {
+	font-size: 19px;
+}
+
+.navbarMenu ul:last-child li a{
+    font-size: 22px;
+}
+
+.menu {
+	position: fixed; 
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: auto; 
+	gap: 30px;
+	background-color: #212121;
+	transform: translateY(-200%);
+	opacity: 0;
+	pointer-events: none;
+	transition: all 0.5s ease;
+	z-index: 2000;
+}
+
+.navbar .Btn {
+	display: none;
+}
+
+/* Buttons */
+
+.btn {
+    border: 0.5px solid rgba(255, 255, 255, 0.4);
+    background-color: rgba(33, 33, 33, 0.3);
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 15px;   
+}
+
+nav .btn {
+    background-color: transparent;
+    border: none;
+    padding: 7px 12px;
+}
+
+.buttonDiv {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-right: 15px;
+}
+
+.buttonDiv a {
+    height: 40px;
+    width: 40%;
+    padding: 10px 15px; 
+    transition: all 0.3s ease;
+}
+
+.buttonDiv a:hover {
+    width: 45%;
+    height: 50px;
+}
+
+nav .playBtnNav, .playBtn {
+    background-color: #7F7D9C;
+    border: 0.5px solid rgba(255, 255, 255, 0.4);
+}
+
+nav .playBtnNav:hover, .playBtn:hover, .buttonDiv a:hover {
+    color: white;
+}
+
+.i {
+    font-size: 33px;
+    margin-right: 3px;
+}
+
+.o {
+    margin-right: 6px;
+}
+
+/* Section */
+
+section {
+    display: flex;
+    flex-direction: row;
+    min-height: 90vh;
+    align-items: center;
+    justify-content: center;
+}
+
+section img {
+    width: 450px;
+    height: 450px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Home */
+
+.sectionTitle {
+    font-size: 75px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.subtitle1 {
+    font-size: 22px;
+    color: #7F7D9C;
+    margin-bottom: 8px;
+}
+
+.subtitle2 {
+    font-size: 17px;
+    opacity: 0.2;
+    margin-top: 35px;
+}
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-areas: 
+        "text img" 
+        "text img";
+    text-align: center;
+    color: white;
+    font-size: 22px;
+    padding: 5rem;
+}
+
+.textFirst {
+    grid-area: text;
+    width: 100%;
+    text-align: left;
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.imgFirst {
+    grid-area: img;
+}
+
+/* AboutS */
+
+.tutoContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.tutoCard {
+    color: white;
+    border: 2px solid white;
+    background-color: #212121;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: 400px;
+    height:  460px;
+}
+
+.stepGif {
+    width: 300px;
+    height: 200px;
+}
+
+.linkTuto {
+    cursor: pointer;
+    color: #7F7D9C;
+}
+
+/* Download */
+
+.links {
+    display: flex;
+    padding: 16px;
+    height: 100%;
+}
+
+.linkDiv, .noteDiv {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.linkDiv {
+    font-size: 55px;
+}
+
+.noteDiv {
+    font-size: 17px;
+    opacity: 0.2;
+}
+
+.links li {
+    margin: 6px;
+}
+
+.links ul {
+    display: flex;
+    flex-direction: column;		
+    gap: 12px;       
+}
+
+.textLink {
+    list-style: none;
+}
+
+.downloadLinks, .supportLink {
+    color: #7F7D9C;
+    cursor: pointer;
+}
+
+/* Responsive Tablette/Fluide*/
+
+@media (max-width: 856px) {
+   
+    /* Responsive Button */
+    
+    .buttonDiv a {
+        font-size: 20px;
+        width: 145px;
+    }
+
+    .buttonDiv a:hover {
+        width: 150px;
+    }
+    
+    .connect-btn {
+        margin-left: 16px;
+    }
+    
+    .o {
+        margin-right: 0px;
+    }
+    
+    /* Responsive Section */
+    
+    section {
+		flex-direction: column;
+    } 
+    
+    /* Responsive Home */
+    
+    .sectionTitle {
+        font-size: 50px;
+    }
+
+    .subtitle1 {
+        font-size: 19px;
+    }
+
+    .subtitle2 {
+        font-size: 14px;
+    }
+    
+    section img {
+        width: 300px;
+        height: 300px;
+    }
+    
+    /* Responsive AboutS */
+    
+    .tutoContainer {
+        flex-direction: column;
+    }
+    
+    .tutoCard {
+        font-size: 15px;
+        width: 250px;
+        height: 310px;
+    }
+    
+    .stepGif {
+        width: 200px;
+        height: 150px;
+    }
+    
+    /* Responsive Download */
+    
+    .linkDiv {
+        font-size: 28px;
+    }
+    
+    .noteDiv {
+        font-size: 14px;
+    }
+} 
+    
+/* Responsive Mobile*/
+
+@media (max-width: 676px) {
+    
+    /* Responsive Navbar */
+    
+    .navbar {
+		position: relative;
+        padding-top: 0;
+    }
+    
+    .icon,
+    .logoDiv {
+		flex: 1;
+		display: flex;
+		align-items: center;
+    }
+
+    .icon {
+		display: flex;
+		justify-content: flex-start;
+    }
+
+    .logoDiv {
+		position: relative;
+		justify-content: center;
+		top: 4px;
+    }
+    
+    .logo {
+        padding-left: 0;
+    }
+
+    .icon::last-child {
+		justify-content: flex-end;
+    }
+    
+    .navbarMenu {
+		display: none;
+    }
+
+   .menu.active {
+		transform: translateY(0);
+		opacity: 1;
+		pointer-events: auto;
+   }
+
+    .menu ul {
+        display: flex;
+        flex-direction: column;
+		gap: 12px;
+		padding-bottom: 23px;
+       
+     }
+
+   .menu li { 
+		position: relative;
+		margin: 6px;
+   }
+
+   .menu a {
+		font-size: 16px;
+   }
+    
+    .topMenu {
+		display: flex;
+		text-align: center;
+		align-items: center;
+		justify-content: space-between;
+        height: 60px;
+		padding: 0 15px;
+		flex-direction: row;
+    }
+    
+    .navbar .Btn {
+		display: flex;
+		font-size: 60px;
+		color: white;
+		cursor: pointer;
+		transition: transform 0.3s ease;
+    }
+    
+    /* Responsive Button */
+    
+    .buttonDiv a {
+        width: 140px;
+    }
+
+    .buttonDiv a:hover {
+        width: 145px;
+    }
+    
+    .connect-btn {
+        margin-left: 16px;
+    }
+    
+    .o {
+        margin-right: 0px;
+    }
+    
+    /* Responsive Section */
+    
+    section {
+		flex-direction: column;
+    } 
+    
+    /* Responsive Home */
+    
+    .gridContainer {
+        grid-template-columns: 100%;
+        grid-template-areas:
+            "text"
+            "img";
+        grid-template-rows: 45vh;
+        padding: 1.5rem;
+    }
+    
+    .sectionTitle {
+        font-size: 50px;
+    }
+
+    .subtitle1 {
+        font-size: 19px;
+    }
+
+    .subtitle2 {
+        font-size: 14px;
+    }
+    
+    section img {
+        width: 300px;
+        height: 300px;
+    }
+    
+    /* Responsive AboutS */
+    
+    .tutoContainer {
+        flex-direction: column;
+    }
+    
+    .tutoCard {
+        font-size: 12px;
+        width: 200px;
+        height: 260px;
+    }
+    
+    .stepGif {
+        width: 150px;
+        height: 100px;
+    }
+    
+    /* Responsive Download */
+    
+    .linkDiv {
+        font-size: 15px;
+    }
+    
+    .noteDiv {
+        font-size: 7px;
+    }
+} 

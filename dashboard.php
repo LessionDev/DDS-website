@@ -1,0 +1,47 @@
+<?php
+session_start();
+
+if(!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+}
+
+$id = $_SESSION['user_id']
+
+?>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DemoniChoice</title>
+        <link rel="stylesheet" href="style/dashboard.css" > 
+        <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">    
+        <!-- manifest -->
+        <link rel="manifest" href="/site.webmanifest">
+        <!-- icones -->
+        <link rel="icon" type="image/png" sizes="32x32" href="/Logo32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/Logo16.png">
+        <link rel="shortcut icon" href="style/res/Logo.ico">
+        <!-- fallback favicon -->
+        <link rel="icon" type="image/png" sizes="32x32" href="style/res/Logo.png">
+        <!-- iOS -->
+        <link rel="apple-touch-icon" sizes="180x180" href="style/res/Logo180.png">
+        <link rel="apple-touch-icon" sizes="167x167" href="style/res/Logo167.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="style/res/Logo152.png">
+    </head>
+    <body>
+        <h1>
+             Welcome <?php echo $_SESSION['username']; ?>
+        </h1>             
+        <?php if($_SESSION['user_status'] == 'admin' || $_SESSION['user_status'] == 'author'): ?>
+    <a href="blogMaker.php?author=<?= $id ?>">Need to write an article ?</a>    
+<?php endif; ?>
+        <?php if($_SESSION['user_status'] == 'admin' || $_SESSION['user_status'] == 'author'): ?>
+    <a href="blogViewer.php?id=<?= $id ?>">Your list of articles</a>    
+<?php endif; ?>
+
+    </body>
+    <footer>
+    </footer>
+</html>
