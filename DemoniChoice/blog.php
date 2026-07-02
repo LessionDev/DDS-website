@@ -35,8 +35,8 @@ $result = mysqli_query($conn, $sql);
 				<ul>
 					<li><a href="home.php">Home</a></li>
                     <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
-                    <li><a href="#">Shop</a></li>
-                	<li><a href="#">Contact Us</a></li>                          
+                    <li><a href="shop.php">Shop</a></li>
+                	<li><a href="contact.php">Contact Us</a></li>                          
 				</ul>
 				<ul>
 					<?php if (!isset($_SESSION["user_id"])): ?>
@@ -69,8 +69,8 @@ $result = mysqli_query($conn, $sql);
                 	<ul>
                     	<li><a href="home.php">Home</a></li>
                         <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
-                        <li><a href="#">Shop</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="shop.php">Shop</a></li>
+                        <li><a href="contact.php">Contact Us</a></li>
                     </ul>
 					<ul>
 						<?php if (!isset($_SESSION["user_id"])): ?>
