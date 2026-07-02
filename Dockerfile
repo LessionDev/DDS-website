@@ -1,13 +1,17 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
-WORKDIR /var/www/html
+WORKDIR /app
 
-COPY . /var/www/html
+COPY . /app
 
-# active mysqli + pdo mysql
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# installe les extensions MySQL correctement
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libonig-dev \
+    libzip-dev \
+    unzip \
+    && docker-php-ext-install mysqli pdo pdo_mysql
 
-# active rewrite (optionnel mais utile)
-RUN a2enmod rewrite
-
-EXPOSE 80
+# IMPORTANT: utiliser le port Railway
+CMD ["sh", "-c", "php -S 0.0.0.0:$PORT -t /app"]
