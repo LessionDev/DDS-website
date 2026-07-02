@@ -1,6 +1,7 @@
 <?php
 require "config.php";
 
+$location = $_GET['cameFrom'];
 $classeTaken = 'Taken';
 $classeRegistered = "notRegistered";
 
@@ -67,7 +68,7 @@ if ($_POST) {
                 </div>  
                 <div class="link">
                     Already have an account ? 
-                    <a href="login.php"> Log In !</a>
+                    <a href="login.php<?= $location ?>"> Log In !</a>
                 </div>
             </form>
         </div>
