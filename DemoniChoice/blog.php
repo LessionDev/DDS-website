@@ -1,9 +1,12 @@
 <?php
 session_start();
-include "../config.php";
-$destination = "demonichoice";
-$sql = "SELECT * FROM posts WHERE blogDestination = '$destination' ORDER BY id DESC";
-$result = mysqli_query($conn, $sql);    
+// AVANT : cette page ouvrait la base et faisait "SELECT * FROM posts
+// WHERE blogDestination = ...". MAINTENANT : elle demande la liste à
+// l'API, exactement comme le fera le launcher plus tard.
+require "../api_client.php";
+
+$result = api_request("posts.php", "GET", ["destination" => "demonichoice"]);
+$posts = $result["posts"] ?? [];
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,27 +32,27 @@ $result = mysqli_query($conn, $sql);
     </head>
     <body>
         <nav>
-        	<div class="navbar">
-			<div class="navbarMenu">
-				<img class="logo" src="../style/res/demonichoice/Logo.png">
-				<ul>
-					<li><a href="home.php">Home</a></li>
+                <div class="navbar">
+                        <div class="navbarMenu">
+                                <img class="logo" src="../style/res/demonichoice/Logo.png">
+                                <ul>
+                                        <li><a href="home.php">Home</a></li>
                     <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
                     <li><a href="shop.php">Shop</a></li>
-                	<li><a href="contact.php">Contact Us</a></li>                          
-				</ul>
-				<ul>
-					<?php if (!isset($_SESSION["user_id"])): ?>
+                        <li><a href="contact.php">Contact Us</a></li>                          
+                                </ul>
+                                <ul>
+                                        <?php if (!isset($_SESSION["user_id"])): ?>
                         <li><a class="btn" href="../login.php?cameFrom=DemoniChoice/blog.php">Connect <i class='bx bx-chevron-right i' ></i> </a></li>          
                     <?php else: ?>
-                        <li><a href="../dashboard.php"><?php echo $_SESSION["username"]; ?></a></li>
+                        <li><a href="../dashboard.php"><?php echo htmlspecialchars($_SESSION["username"]); ?></a></li>
                         <li><a class="btn o" href="../logout.php?cameFrom=DemoniChoice/blog.php">Logout<i class='bx bx-log-out'></i> </a></li>
                     <?php endif; ?>
-				</ul>
-			</div>
-			<div class="icon">
-				<i class="bx bx-menu openBtn Btn"></i>
-			</div>
+                                </ul>
+                        </div>
+                        <div class="icon">
+                                <i class="bx bx-menu openBtn Btn"></i>
+                        </div>
             <div class="logoDiv">
                 <img class="logo" src="../style/res/demonichoice/Logo.png">
             </div>
@@ -57,48 +60,46 @@ $result = mysqli_query($conn, $sql);
             </div>
             <div class="menu">
                 <div class="topMenu">
-                	<div class="icon">
-						<i class="bx bx-x closeBtn Btn"></i>
-					</div>
+                        <div class="icon">
+                                                <i class="bx bx-x closeBtn Btn"></i>
+                                        </div>
                     <div class="logoDiv">
                         <img class="logo" src="../style/res/demonichoice/Logo.png">
                     </div>
                     <div class="icon">
                     </div>
-            	</div>
-                	<ul>
-                    	<li><a href="home.php">Home</a></li>
+                </div>
+                        <ul>
+                        <li><a href="home.php">Home</a></li>
                         <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
                         <li><a href="shop.php">Shop</a></li>
                         <li><a href="contact.php">Contact Us</a></li>
                     </ul>
-					<ul>
-						<?php if (!isset($_SESSION["user_id"])): ?>
+                                        <ul>
+                                                <?php if (!isset($_SESSION["user_id"])): ?>
                             <li><a class="btn connect-btn" href="../login.php?cameFrom=DemoniChoice/blog.php">Connect <i class='bx bx-chevron-right i' ></i> </a></li>
                         <?php else: ?>
-                            <li><a href="../dashboard.php"><?php echo $_SESSION["username"]; ?></a></li>
+                            <li><a href="../dashboard.php"><?php echo htmlspecialchars($_SESSION["username"]); ?></a></li>
                             <li><a class="btn" href="../logout.php?cameFrom=DemoniChoice/blog.php">Logout <i class='bx bx-log-out o' ></i> </a></li>
                         <?php endif; ?>
-					</ul>
-				</div>
+                                        </ul>
+                                </div>
             </div>
         </nav>
-        <?php
-            while ($row = mysqli_fetch_assoc($result)) {
-        ?>
+        <?php foreach ($posts as $row): ?>
         <div class="container">
-        	<div class="article" style="background-image: url('../style/res/blog/posts/demonichoice/<?php echo $row['image']; ?>');">
-            	<div class="title">
-                	<a class="articleLink" href="articleOn.php?post_id=<?php echo $row['id']; ?>"> <?php echo $row['title'];?> </a>
-            	</div>
-        	</div>
+                <!-- AVANT : $row['image'] et $row['title'] affichés sans
+                     échappement -> XSS stocké possible via un titre malveillant
+                     créé par un auteur compromis ou malintentionné. -->
+                <div class="article" style="background-image: url('../style/res/blog/posts/demonichoice/<?php echo htmlspecialchars($row['image']); ?>');">
+                <div class="title">
+                        <a class="articleLink" href="articleOn.php?post_id=<?php echo (int) $row['id']; ?>"> <?php echo htmlspecialchars($row['title']); ?> </a>
+                </div>
+                </div>
         </div>
-        <?php
-        }
-        ?>        
+        <?php endforeach; ?>
         <script src="../scripts/nav.js"></script>
     </body>
     <footer>
     </footer>
 </html>
- 

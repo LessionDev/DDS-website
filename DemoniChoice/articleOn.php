@@ -1,11 +1,24 @@
 <?php
 session_start();
-include "../config.php";
+// AVANT : cette page faisait "SELECT * FROM posts WHERE id = $post_id"
+// directement (concaténation -> injection SQL possible malgré
+// l'intval, et surtout accès direct à la base depuis une page HTML).
+// MAINTENANT : elle demande l'article à l'API.
+require "../api_client.php";
 
-$post_id = intval($_GET['post_id']);
-$sql = "SELECT * FROM posts WHERE id = $post_id";
-$result = mysqli_query($conn, $sql);
-$row = mysqli_fetch_assoc($result);
+$post_id = intval($_GET['post_id'] ?? 0);
+$result = api_request("posts.php", "GET", ["id" => $post_id]);
+
+if (empty($result["success"])) {
+    http_response_code(404);
+    die("Article introuvable.");
+}
+
+$row = $result["post"];
+$hasPrev = $result["hasPrev"];
+$prevId = $result["prevId"];
+$hasNext = $result["hasNext"];
+$nextId = $result["nextId"];
 ?>
 <!DOCTYPE html>
 <html>
@@ -31,27 +44,27 @@ $row = mysqli_fetch_assoc($result);
     </head>
     <body>
         <nav>
-        	<div class="navbar">
-			<div class="navbarMenu">
-				<img class="logo" src="../style/res/demonichoice/Logo.png">
-				<ul>
-					<li><a href="home.php">Home</a></li>
+                <div class="navbar">
+                        <div class="navbarMenu">
+                                <img class="logo" src="../style/res/demonichoice/Logo.png">
+                                <ul>
+                                        <li><a href="home.php">Home</a></li>
                     <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
                     <li><a href="shop.php">Shop</a></li>
-                	<li><a href="contact.php">Contact Us</a></li>                          
-				</ul>
-				<ul>
-					<?php if (!isset($_SESSION["user_id"])): ?>
-                        <li><a class="btn" href="../login.php?cameFrom=DemoniChoice/articleOn.php?post_id=<?= $post_id ?>">Connect <i class='bx bx-chevron-right i' ></i> </a></li>          
+                        <li><a href="contact.php">Contact Us</a></li>                          
+                                </ul>
+                                <ul>
+                                        <?php if (!isset($_SESSION["user_id"])): ?>
+                        <li><a class="btn" href="../login.php?cameFrom=DemoniChoice/articleOn.php?post_id=<?= (int) $post_id ?>">Connect <i class='bx bx-chevron-right i' ></i> </a></li>          
                     <?php else: ?>
-                        <li><a href="../dashboard.php"><?php echo $_SESSION["username"]; ?></a></li>
-                        <li><a class="btn o" href="../logout.php?cameFrom=DemoniChoice/articleOn.php?post_id=<?= $post_id ?>">Logout<i class='bx bx-log-out'></i> </a></li>
+                        <li><a href="../dashboard.php"><?php echo htmlspecialchars($_SESSION["username"]); ?></a></li>
+                        <li><a class="btn o" href="../logout.php?cameFrom=DemoniChoice/articleOn.php?post_id=<?= (int) $post_id ?>">Logout<i class='bx bx-log-out'></i> </a></li>
                     <?php endif; ?>
-				</ul>
-			</div>
-			<div class="icon">
-				<i class="bx bx-menu openBtn Btn"></i>
-			</div>
+                                </ul>
+                        </div>
+                        <div class="icon">
+                                <i class="bx bx-menu openBtn Btn"></i>
+                        </div>
             <div class="logoDiv">
                 <img class="logo" src="../style/res/demonichoice/Logo.png">
             </div>
@@ -59,60 +72,51 @@ $row = mysqli_fetch_assoc($result);
             </div>
             <div class="menu">
                 <div class="topMenu">
-                	<div class="icon">
-						<i class="bx bx-x closeBtn Btn"></i>
-					</div>
+                        <div class="icon">
+                                                <i class="bx bx-x closeBtn Btn"></i>
+                                        </div>
                     <div class="logoDiv">
                         <img class="logo" src="../style/res/demonichoice/Logo.png">
                     </div>
                     <div class="icon">
                     </div>
-            	</div>
-                	<ul>
-                    	<li><a href="home.php">Home</a></li>
+                </div>
+                        <ul>
+                        <li><a href="home.php">Home</a></li>
                         <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
                         <li><a href="shop.php">Shop</a></li>
                         <li><a href="contact.php">Contact Us</a></li>
                     </ul>
-					<ul>
-						<?php if (!isset($_SESSION["user_id"])): ?>
-                            <li><a class="btn connect-btn" href="../login.php?cameFrom=DemoniChoice/articleOn.php?post_id=<?= $post_id ?>">Connect <i class='bx bx-chevron-right i' ></i> </a></li>
+                                        <ul>
+                                                <?php if (!isset($_SESSION["user_id"])): ?>
+                            <li><a class="btn connect-btn" href="../login.php?cameFrom=DemoniChoice/articleOn.php?post_id=<?= (int) $post_id ?>">Connect <i class='bx bx-chevron-right i' ></i> </a></li>
                         <?php else: ?>
-                            <li><a href="../dashboard.php"><?php echo $_SESSION["username"]; ?></a></li>
-                            <li><a class="btn" href="../logout.php?cameFrom=DemoniChoice/articleOn.php?post_id=<?= $post_id ?>">Logout <i class='bx bx-log-out o' ></i> </a></li>
+                            <li><a href="../dashboard.php"><?php echo htmlspecialchars($_SESSION["username"]); ?></a></li>
+                            <li><a class="btn" href="../logout.php?cameFrom=DemoniChoice/articleOn.php?post_id=<?= (int) $post_id ?>">Logout <i class='bx bx-log-out o' ></i> </a></li>
                         <?php endif; ?>
-					</ul>
-				</div>
+                                        </ul>
+                                </div>
             </div>
         </nav>
         <div class="backBlog">
             <a class="blogBack" href="blog.php"><i class='bx bx-left-arrow-alt'></i>Back to the blog section</a>
         </div>
         <div class="displayArticle">
-        	<img class="articleImg" src="../style/res/blog/posts/demonichoice/<?php echo $row['image']; ?>">
+                <!-- AVANT : $row['image']/['title']/['content'] affichés sans
+                     échappement -> XSS stocké. -->
+                <img class="articleImg" src="../style/res/blog/posts/demonichoice/<?php echo htmlspecialchars($row['image']); ?>">
             <div class="articleText">
-        		<h1><?php echo $row['title']; ?></h1>
-        		<p><?php echo $row['content']; ?></p>  
+                        <h1><?php echo htmlspecialchars($row['title']); ?></h1>
+                        <p><?php echo htmlspecialchars($row['content']); ?></p>  
             </div>
         </div>
         <div class="buttons">
-        <?php
-
-        $prev_id = $post_id - 1;
-        $check_prev = mysqli_query($conn, "SELECT id FROM posts WHERE id = $prev_id");
-
-        if (mysqli_num_rows($check_prev) > 0) {
-            echo '<a class="previous" href="articleOn.php?post_id=' . $prev_id . '" class="previous"><i class="bx bx-arrow-back"></i>Previous article</a>';
-        }
-
-        $next_id = $post_id + 1;
-        $check_next = mysqli_query($conn, "SELECT id FROM posts WHERE id = $next_id");
-
-        if (mysqli_num_rows($check_next) > 0) {
-            echo '<a class="next" href="articleOn.php?post_id=' . $next_id . '" class="next">Next article<i class="bx bx-right-arrow-alt"></i></a>';
-        }
-
-?>
+        <?php if ($hasPrev): ?>
+            <a class="previous" href="articleOn.php?post_id=<?php echo (int) $prevId; ?>" class="previous"><i class="bx bx-arrow-back"></i>Previous article</a>
+        <?php endif; ?>
+        <?php if ($hasNext): ?>
+            <a class="next" href="articleOn.php?post_id=<?php echo (int) $nextId; ?>" class="next">Next article<i class="bx bx-right-arrow-alt"></i></a>
+        <?php endif; ?>
 </div>
         <script src="../scripts/nav.js"></script>
     </body>
