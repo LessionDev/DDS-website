@@ -32,8 +32,8 @@ require "../config.php";
 				<ul>
 					<li><a href="blog.php">Blog</a></li>
                     <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
-                    <li><a href="#">Shop</a></li>
-                	<li><a href="#">Contact Us</a></li>                          
+                    <li><a href="shop.php">Shop</a></li>
+                	<li><a href="contact.php">Contact Us</a></li>                          
 				</ul>
 				<ul>
 					<?php if (!isset($_SESSION["user_id"])): ?>
@@ -67,8 +67,8 @@ require "../config.php";
                 	<ul>
                     	<li><a href="blog.php">Blog</a></li>
                         <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
-                        <li><a href="#">Shop</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="shop.php">Shop</a></li>
+                        <li><a href="contact.php">Contact Us</a></li>
                     </ul>
 					<ul>
 						<?php if (!isset($_SESSION["user_id"])): ?>
