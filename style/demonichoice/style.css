@@ -258,7 +258,7 @@ section img {
 }
 
 .linkDiv, .noteDiv {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     color: white;
