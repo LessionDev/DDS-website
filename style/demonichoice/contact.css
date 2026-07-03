@@ -25,7 +25,8 @@ li {
   padding: 0px;
 }
 
-.contactLinks a {
+a {
+  padding: 0px;
   text-decoration: underline;
   cursor: pointer;
 }
