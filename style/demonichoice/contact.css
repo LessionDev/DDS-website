@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-ul {
+.contactDiv ul {
   display: flex;
   flex-direction: column;
 	align-items: center;
@@ -20,9 +20,9 @@ ul {
   height: 150px;
 }
 
-li {
+.contactLink li {
   color: white;
-  padding: 1.5rem;
+  padding: 0.8rem;
 }
 
 .contactTitle {
