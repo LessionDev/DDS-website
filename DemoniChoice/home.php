@@ -126,11 +126,11 @@ session_start();
                 <div class="links">
                     <ul>
                         <div class=linkDiv>
-                            <li class="textLink"><i class='bx bx-chevrons-right'></i>Download launcher for Windows<a class="downloadLinks" href=#>here.</a></li>
-                            <li class="textLink"><i class='bx bx-chevrons-right'></i>Download launcher for MacOS<a class="downloadLinks" href=#>here.</a></li>
+                            <li class="textLink"><i class='bx bx-chevrons-right'></i>Download launcher for Windows <a class="downloadLinks" href=#>here.</a></li>
+                            <li class="textLink"><i class='bx bx-chevrons-right'></i>Download launcher for MacOS <a class="downloadLinks" href=#>here.</a></li>
                         </div>
                         <div class="noteDiv">
-                            <li>Note : you need Java installed on your computer, if you need help contact the<a class="supportLink" href="contact.php">support</a></li>
+                            <li>Note : you need Java installed on your computer, if you need help contact the <a class="supportLink" href="contact.php">support</a></li>
                         </div>
                     </ul>
                 </div>                                              
