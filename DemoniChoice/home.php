@@ -134,8 +134,7 @@ session_start();
                             <a class="downloadLinks" href=#>here.</a>
                         </div>
                         <div class="noteDiv">
-                            <li>Note : you need Java installed on your computer, if you need help contact the</li>
-                            <a class="supportLink" href="contact.php">support</a>
+                            <li>Note : you need Java installed on your computer, if you need help contact the <a class="supportLink" href="contact.php">support</a></li>
                         </div>
                     </ul>
                 </div>                                              
