@@ -1,17 +1,21 @@
 .contactDiv {
   display: flex;
-  flex-direction: column;
   text-align: center;
   justify-content: center;
 }
 
 .logoContact {
-  width : 300px;
-  height: 300px;
+  width : 150px;
+  height: 150px;
 }
 
 .contactLinks {
+  color: white;
   text-decoration: none;
   list-style: none;
+}
+
+.contactLinks a:hover {
+  color: purple;
 }
   
