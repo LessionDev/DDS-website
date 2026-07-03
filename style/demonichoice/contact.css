@@ -20,11 +20,14 @@ ul {
   height: 150px;
 }
 
-.contactLinks a, .contactLinks li{
+.contactLinks li {
   color: white;
-  text-decoration: none;
-  list-style: none;
   padding: 0px;
+}
+
+.contactLinks a {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .contactLinks a:hover {
