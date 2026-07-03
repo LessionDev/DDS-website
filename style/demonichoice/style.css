@@ -288,8 +288,12 @@ section img {
 }
 
 .downloadLinks, .supportLink {
-    color: #7F7D9C;
+    text-decoration: UNDERLINED;
     cursor: pointer;
+}
+
+.downloadLinks {
+  color: #7F7D9C;
 }
 
 /* Responsive Tablette/Fluide*/
