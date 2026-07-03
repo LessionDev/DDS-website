@@ -80,7 +80,7 @@ session_start();
             </div>
         </nav>
         <div class="contactDiv">
-            <img src="../style/res/demonichoice/Logo.png">
+            <img class="logoContact" src="../style/res/demonichoice/Logo.png">
             <ul>
                 <li class="contactTitle">You can contact us with the following :</li>
                 <li class="contactLink">- The discord server <a class="contactLink" href="https://discord.com/">here.</a></li>
