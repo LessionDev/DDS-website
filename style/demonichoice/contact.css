@@ -3,6 +3,7 @@
   flex-direction: column;
   text-align: center;
   justify-content: center;
+  align-items: center;
 }
 
 ul {
@@ -19,10 +20,11 @@ ul {
   height: 150px;
 }
 
-.contactLinks {
+.contactLinks a, .contactLinks li{
   color: white;
   text-decoration: none;
   list-style: none;
+  padding: 0px;
 }
 
 .contactLinks a:hover {
