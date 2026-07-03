@@ -47,17 +47,12 @@ if ($stmt->get_result()->num_rows > 0) {
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 $stmt = $conn->prepare("INSERT INTO users (username, password, status) VALUES (?, ?, 'player')");
-
-if (!$stmt) {
-    die("Erreur prepare() : " . $conn->error);
-}
-
 $stmt->bind_param("ss", $username, $hashedPassword);
 
 if ($stmt->execute()) {
     echo json_encode(["success" => true]);
 } else {
-    die($stmt->error);
+    error_log("register insert failed: " . $stmt->error);
     http_response_code(500);
     echo json_encode(["success" => false, "message" => "server_error"]);
 }
