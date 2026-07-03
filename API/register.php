@@ -57,7 +57,7 @@ $stmt->bind_param("ss", $username, $hashedPassword);
 if ($stmt->execute()) {
     echo json_encode(["success" => true]);
 } else {
-    error_log("register insert failed: " . $stmt->error);
+    die($stmt->error);
     http_response_code(500);
     echo json_encode(["success" => false, "message" => "server_error"]);
 }
