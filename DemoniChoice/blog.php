@@ -43,10 +43,10 @@ $posts = $result["posts"] ?? [];
                                 </ul>
                                 <ul>
                                         <?php if (!isset($_SESSION["user_id"])): ?>
-                        <li><a class="btn" href="../login.php?cameFrom=DemoniChoice/blog.php">Connect <i class='bx bx-chevron-right i' ></i> </a></li>          
+                        <li><a class="btn" href="../login.php?cameFrom=/DemoniChoice/blog.php">Connect <i class='bx bx-chevron-right i' ></i> </a></li>          
                     <?php else: ?>
                         <li><a href="../dashboard.php"><?php echo htmlspecialchars($_SESSION["username"]); ?></a></li>
-                        <li><a class="btn o" href="../logout.php?cameFrom=DemoniChoice/blog.php">Logout<i class='bx bx-log-out'></i> </a></li>
+                        <li><a class="btn o" href="../logout.php?cameFrom=/DemoniChoice/blog.php">Logout<i class='bx bx-log-out'></i> </a></li>
                     <?php endif; ?>
                                 </ul>
                         </div>
@@ -77,10 +77,10 @@ $posts = $result["posts"] ?? [];
                     </ul>
                                         <ul>
                                                 <?php if (!isset($_SESSION["user_id"])): ?>
-                            <li><a class="btn connect-btn" href="../login.php?cameFrom=DemoniChoice/blog.php">Connect <i class='bx bx-chevron-right i' ></i> </a></li>
+                            <li><a class="btn connect-btn" href="../login.php?cameFrom=/DemoniChoice/blog.php">Connect <i class='bx bx-chevron-right i' ></i> </a></li>
                         <?php else: ?>
                             <li><a href="../dashboard.php"><?php echo htmlspecialchars($_SESSION["username"]); ?></a></li>
-                            <li><a class="btn" href="../logout.php?cameFrom=DemoniChoice/blog.php">Logout <i class='bx bx-log-out o' ></i> </a></li>
+                            <li><a class="btn" href="../logout.php?cameFrom=/DemoniChoice/blog.php">Logout <i class='bx bx-log-out o' ></i> </a></li>
                         <?php endif; ?>
                                         </ul>
                                 </div>
