@@ -5,6 +5,11 @@
   justify-content: center;
 }
 
+.logoContact {
+  width : 300px;
+  height: 300px;
+}
+
 .contactLinks {
   text-decoration: none;
   list-style: none;
