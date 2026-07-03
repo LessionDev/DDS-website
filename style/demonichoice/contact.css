@@ -20,18 +20,15 @@
   height: 150px;
 }
 
-.contactLink li {
+.contactLink {
   color: white;
   padding: 0.8rem;
+  font-size: 19px;
 }
 
 .contactTitle {
   font-size: 25px;  
   padding-bottom: 50px;
-}
-
-.contactLink {
-  font-size: 19px;
 }
 
 .contactLink a{
