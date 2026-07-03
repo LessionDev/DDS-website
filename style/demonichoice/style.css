@@ -259,6 +259,7 @@ section img {
 
 .linkDiv, .noteDiv {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     color: white;
@@ -288,12 +289,16 @@ section img {
 }
 
 .downloadLinks, .supportLink {
-    text-decoration: UNDERLINED;
+    text-decoration: underline;
     cursor: pointer;
 }
 
 .downloadLinks {
   color: #7F7D9C;
+}
+
+.supportLink {
+  color: gray;
 }
 
 /* Responsive Tablette/Fluide*/
