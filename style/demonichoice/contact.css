@@ -27,8 +27,10 @@
 }
 
 .contactTitle {
+  font-weight: bold;
   color: white;
   font-size: 25px;  
+  padding-bottom: 20px;
 }
 
 .contactLink a{
