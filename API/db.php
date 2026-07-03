@@ -44,7 +44,7 @@ $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
 if ($conn->connect_error) {
     // On ne montre jamais le détail de l'erreur MySQL à un client (site
     // ou launcher), ça peut révéler des infos sur l'infra.
-    println("Erreur DB : " . $conn->connect_error);
+    error.log("Erreur DB : " . $conn->connect_error);
     http_response_code(500);
     header("Content-Type: application/json");
     die(json_encode(["success" => false, "message" => "Une erreur est survenue, réessaie plus tard."]));
