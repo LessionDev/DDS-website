@@ -46,7 +46,7 @@ if ($stmt->get_result()->num_rows > 0) {
 
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-$stmt = $conn->prepare("INSERT INTO users (username, password, status) VALUES (?, ?, 'member')");
+$stmt = $conn->prepare("INSERT INTO users (username, password, status) VALUES (?, ?, 'player')");
 
 if (!$stmt) {
     die("Erreur prepare() : " . $conn->error);
