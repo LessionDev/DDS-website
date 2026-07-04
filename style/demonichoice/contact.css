@@ -16,21 +16,21 @@
 }
 
 .logoContact {
-  width : 150px;
-  height: 150px;
+  width : 200px;
+  height: 200px;
 }
 
 .contactLink {
   font-weight: bold;
   color: white;
   padding: 0.5rem;
-  font-size: 19px;
+  font-size: 26px;
 }
 
 .contactTitle {
   font-weight: bold;
   color: white;
-  font-size: 27px;  
+  font-size: 34px;  
   padding-bottom: 20px;
 }
 
@@ -39,7 +39,6 @@
   padding: 0px;
   text-decoration: none;
   cursor: pointer;
-  color: #7F7D9C;
 }
 
 .contactLink a::before {
@@ -54,10 +53,32 @@
     transform-origin: right;
     transform: scaleX(0);
     transition: transform .3s ease-in-out;
-  }
+}
 
 .contactLink a:hover::before {
   transform-origin: left;
   transform: scaleX(1);
+}
+
+@media (max-width: 856px) {
+  
+  .logoContact {
+    width : 150px;
+    height: 150px;
+  }
+  
+  .contactTitle {
+    font-size: 19px;
+  }
+  
+  .contactLink {
+    font-size: 15px;
+  }
+  
+  .contactLink a{
+    text-decoration: underline;
+    color: #7F7D9C;
+  }
+
 }
   
