@@ -30,7 +30,7 @@ a {
 a::before {
     content: '';
     position: absolute;
-    width: 100%;
+    width: 70%;
     height: 4px;
     border-radius: 4px;
     background-color: #7F7D9C;
