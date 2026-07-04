@@ -20,7 +20,7 @@
   height: 200px;
 }
 
-.contactLink li {
+.contactLink {
   color: white;
   padding: 0.5rem;
   font-size: 26px;
@@ -32,6 +32,10 @@
   font-size: 34px;  
   padding-bottom: 20px;
 }
+
+.contactLink a {
+  padding: 0px;
+  color: #7F7D9C;
 
 @media (max-width: 856px) {
   
