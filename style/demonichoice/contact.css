@@ -36,7 +36,7 @@
 
 .contactLink a{
   padding: 0px;
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
   color: #7F7D9C;
 }
