@@ -156,6 +156,10 @@ nav .btn {
     height: 50px;
 }
 
+.buttonDiv a::before {
+  display: none;
+}
+
 nav .playBtnNav, .playBtn {
     background-color: #7F7D9C;
     border: 0.5px solid rgba(255, 255, 255, 0.4);
