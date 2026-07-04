@@ -451,6 +451,8 @@ section img {
 
    .menu a {
 		font-size: 16px;
+    color: white;
+    text-decoration: none;
    }
     
     .topMenu {
