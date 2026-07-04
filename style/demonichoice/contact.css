@@ -35,6 +35,7 @@
 }
 
 .contactLink a{
+  position: relative;
   padding: 0px;
   text-decoration: none;
   cursor: pointer;
