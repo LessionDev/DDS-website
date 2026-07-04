@@ -555,4 +555,8 @@ section img {
       color: #7F7D9C;
       text-decoration: underline;
     }
+    
+    a::before {
+      display: none;
+    }
 } 
