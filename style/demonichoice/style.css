@@ -23,7 +23,7 @@ body.no-scroll {
 
 a {
   position: relative;
-  color: white;
+  color: #7F7D9C;
   text-decoration: none;
 }
 
@@ -315,6 +315,10 @@ section img {
 
 .supportLink {
   color: gray;
+}
+
+.supportLink a::before {
+  display: none;
 }
 
 /* Responsive Tablette/Fluide*/
