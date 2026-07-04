@@ -318,7 +318,7 @@ section img {
   color: gray;
 }
 
-.supportLink a::before {
+.noteDiv a::before {
   display: none;
 }
 
