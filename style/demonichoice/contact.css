@@ -20,7 +20,7 @@
   height: 200px;
 }
 
-.contactLink {
+.contactLink li {
   color: white;
   padding: 0.5rem;
   font-size: 26px;
