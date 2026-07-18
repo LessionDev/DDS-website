@@ -3,8 +3,8 @@ session_start();
 require "api_client.php";
 
 $blogs = api_request("getValues.php", "POST", [
-        "value" => str(blogDestination) ?? "",
-        "table" => posts ?? "",
+        "value" => "blogDestination" ?? "",
+        "table" => "posts" ?? "",
         "extra" => "isEnum" ?? "",
     ]);
 
