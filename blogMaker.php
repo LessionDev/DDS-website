@@ -1,20 +1,10 @@
 <?php
 session_start();
 require "api_client.php";
-require_once "API/db.php";
 
-$stmt = $conn->prepare("
-            SHOW COLUMNS
-            FROM posts
-            LIKE 'blogDestination'
-            ");
-
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc(); 
-
-preg_match("/^enum\((.*)\)$/", $row['Type'], $matches);
 $blogs = str_getcsv($matches[1], ',', "'");
+
+$blogs = api_client("API/getBlogs.php", [], true)
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
