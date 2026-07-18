@@ -6,8 +6,11 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit;
 }
-
-$result = api_request("posts.php", "GET", ["author_id" => $_SESSION['user_id']]);
+$result = api_request("getValues.php", "READ", [
+    "value" => $_SESSION['user_id']
+    "table" => "posts"
+    "extra" => "getPostsByAuthorId"
+    ]);
 $posts = $result["posts"] ?? [];
 ?>
 <!DOCTYPE html>
