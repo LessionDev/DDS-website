@@ -7,7 +7,11 @@ session_start();
 require "../api_client.php";
 
 $post_id = intval($_GET['post_id'] ?? 0);
-$result = api_request("posts.php", "GET", ["id" => $post_id]);
+$result = api_request("getValues.php", "POST", [
+    "value" => $post_id
+    "table" => "posts"
+    "extra" => "getPostById"
+    ]);
 
 if (empty($result["success"])) {
     http_response_code(404);
