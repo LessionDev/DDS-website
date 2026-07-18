@@ -17,7 +17,10 @@ $allowedTables = [
 $allowedColumns = [
     "blogDestination",
     "username",
-    "id"
+    "id",
+    "image",
+    "content",
+    "author_id"
 ];
 
 $value = $_POST["value"] ?? "";
