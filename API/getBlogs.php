@@ -1,6 +1,8 @@
 <?php
 require_once "API/db.php";
 
+header("Content-Type: application/json");
+
 $stmt = $conn->prepare("
             SHOW COLUMNS
             FROM posts
