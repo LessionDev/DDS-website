@@ -7,8 +7,8 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 $result = api_request("getValues.php", "READ", [
-    "value" => $_SESSION['user_id']
-    "table" => "posts"
+    "value" => $_SESSION['user_id'],
+    "table" => "posts",
     "extra" => "getPostsByAuthorId"
     ]);
 $posts = $result["posts"] ?? [];
