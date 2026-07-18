@@ -36,6 +36,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $content = trim($_POST['content'] ?? '');
     $destinationRaw = trim($_POST['destination'] ?? '');
 
+    var_dump($_POST);
+
+    echo "<br>Title: ";
+    var_dump($title);
+
+    echo "<br>Content: ";
+    var_dump($content);
+
+    echo "<br>Destination: ";
+    var_dump($destinationRaw);
+
+    exit;
+
     if (empty($title) || empty($content) || empty($destinationRaw)) {
         die("Please fill the necessary informations.");
     }
