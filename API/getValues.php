@@ -31,6 +31,7 @@ if ($value === "" || $table === "") {
 }
 
 if (!in_array($table, $allowedTables) || !in_array($value, $allowedColumns)) {
+    http_response_code(400);
     echo json_encode([
         "success" => false,
         "message" => "Invalid table or column"
@@ -51,24 +52,38 @@ if ($extra === "isEnum") {
     $row = $result->fetch_assoc(); 
     
     if (!$row) {
-    echo json_encode([
-        "success" => false,
-        "message" => "Column not found"
-    ]);
-    exit;
-}
+        echo json_encode([
+            "success" => false,
+            "message" => "Column not found"
+        ]);
+        exit;
+    }
+    
+    if (!isset($matches[1])) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Column is not an ENUM"
+        ]);
+        exit;
+    }
 
     preg_match("/^enum\((.*)\)$/i", $row['Type'], $matches);
     $fresult = str_getcsv($matches[1], ',', "'");
 
 } else {
-    $stmt =$conn->prepare("
-            SELECT `$value`
-            FROM `$table`
-        ");
-    
+
+    $stmt = $conn->prepare("
+        SELECT `$value`
+        FROM `$table`
+    ");
+
     $stmt->execute();
-    $fresult = $stmt->get_result();
+    $result = $stmt->get_result();
+    $fresult = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $fresult[] = $row[$value];
+    }
 }
 
 if($fresult) {
