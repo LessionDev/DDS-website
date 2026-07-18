@@ -71,6 +71,10 @@ if ($extra === "isEnum") {
     
     $fresult = str_getcsv($matches[1], ',', "'");
 
+} elseif($extra === "postFromId") {
+
+} elseif($extra === "postFromAuthorId") {
+
 } else {
 
     $stmt = $conn->prepare("
