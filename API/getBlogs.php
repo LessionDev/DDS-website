@@ -37,9 +37,13 @@ if ($extra === "isEnum") {
 
 } else {
     $stmt =$conn->prepare("
+            SELECT ??
             FROM ??
-            
         ")
+        
+    $stmt->bind_param("ss", $value, $table);
+    $stmt->execute();
+    $fresult = $stmt->get_result();
 }
 
 if($fresult) {
