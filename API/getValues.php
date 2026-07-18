@@ -71,7 +71,7 @@ if ($extra === "isEnum") {
     
     $fresult = str_getcsv($matches[1], ',', "'");
 
-} elseif($extra === "postFromId") {
+} elseif($extra === "getPostById") {
 
     $stmt = $conn->prepare("SELECT id, title, content, image, author_id, blogDestination FROM posts WHERE id = ?");
     $stmt->bind_param("i", $value);
