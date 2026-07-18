@@ -67,7 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mkdir($destinationDir, 0755, true);
         }
 
-        move_uploaded_file($tmpPath, $destinationDir . '/' . $imageName);
+        $imagePath = $destinationDir . '/' . $imageName;
+
+        if (!move_uploaded_file($tmpPath, $imagePath)) {
+            die("Upload failed");
+        }
     }
     
     $result = api_request("posts_create.php", "POST", [
