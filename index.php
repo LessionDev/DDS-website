@@ -1,9 +1,5 @@
 <?php
 session_start();
-// AVANT : require "config.php" ouvrait une connexion à la base ici,
-// alors que cette page n'a jamais fait la moindre requête SQL — elle
-// ne fait que lire $_SESSION. MAINTENANT : plus aucune page en dehors
-// du dossier API/ n'a accès à la base de données.
 ?>
 
 <!DOCTYPE html>
@@ -34,58 +30,56 @@ session_start();
                                 <img class="logo" src="style/res/Logo.png">
                                 <ul>
                                         <li><a href="blog.php">Blog</a></li>
-                    <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
-                    <li><a href="#">Shop</a></li>
-                        <li><a href="#">Contact Us</a></li>                          
+                                        <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
+                                        <li><a href="#">Shop</a></li>
+                                        <li><a href="#">Contact Us</a></li>                          
                                 </ul>
                                 <ul>
                                         <?php if (!isset($_SESSION["user_id"])): ?>
-                        <li><a class="btn" href="login.php">Connect <i class='bx bx-chevron-right i' ></i> </a></li>          
-                    <?php else: ?>
-                        <!-- AVANT : echo $_SESSION["username"] sans échappement -> XSS stocké
-                             possible via un pseudo malveillant créé à l'inscription. -->
-                        <li><a href="dashboard.php"><?php echo htmlspecialchars($_SESSION["username"]); ?></a></li>
-                        <li><a class="btn o" href="logout.php">Logout<i class='bx bx-log-out'></i> </a></li>
-                    <?php endif; ?>
-                        <li><a class="playBtnNav btn" href="#Download">Play !</a></li>
+                                                <li><a class="btn" href="login.php">Connect <i class='bx bx-chevron-right i' ></i> </a></li>          
+                                        <?php else: ?>
+                                                <li><a href="dashboard.php"><?php echo htmlspecialchars($_SESSION["username"]); ?></a></li>
+                                                <li><a class="btn o" href="logout.php">Logout<i class='bx bx-log-out'></i> </a></li>
+                                        <?php endif; ?>
+                                        <li><a class="playBtnNav btn" href="#Download">Play !</a></li>
                                 </ul>
                         </div>
                         <div class="icon">
                                 <i class="bx bx-menu openBtn Btn"></i>
                         </div>
-            <div class="logoDiv">
-                <img class="logo" src="style/res/Logo.png">
-            </div>
-            <div class="icon">
-            </div>
-            <div class="menu">
-                <div class="topMenu">
+                        <div class="logoDiv">
+                                <img class="logo" src="style/res/Logo.png">
+                        </div>
                         <div class="icon">
+                        </div>
+                        <div class="menu">
+                                <div class="topMenu">
+                                        <div class="icon">
                                                 <i class="bx bx-x closeBtn Btn"></i>
                                         </div>
-                    <div class="logoDiv">
-                        <img class="logo" src="style/res/Logo.png">
-                    </div>
-                    <div class="icon">
-                    </div>
-                </div>
-                        <ul>
-                        <li><a href="blog.php">Blog</a></li>
-                        <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
-                        <li><a href="#">Shop</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                                        <ul>
-                                                <?php if (!isset($_SESSION["user_id"])): ?>
-                            <li><a class="btn connect-btn" href="login.php">Connect <i class='bx bx-chevron-right i' ></i> </a></li>
-                        <?php else: ?>
-                            <li><a href="dashboard.php"><?php echo htmlspecialchars($_SESSION["username"]); ?></a></li>
-                            <li><a class="btn" href="logout.php">Logout <i class='bx bx-log-out o' ></i> </a></li>
-                        <?php endif; ?>
-                        <li><a class="playBtnNav btn" href="#Download"> Play !</a></li>
-                                        </ul>
+                                        <div class="logoDiv">
+                                                <img class="logo" src="style/res/Logo.png">
+                                        </div>
+                                        <div class="icon">
+                                        </div>
                                 </div>
-            </div>
+                                <ul>
+                                        <li><a href="blog.php">Blog</a></li>
+                                        <li><a href="https://minecraft.fandom.com/fr/wiki/Minecraft_Wiki">Wiki</a></li>                            
+                                        <li><a href="#">Shop</a></li>
+                                        <li><a href="#">Contact Us</a></li>
+                                </ul>
+                                <ul>
+                                        <?php if (!isset($_SESSION["user_id"])): ?>
+                                                <li><a class="btn connect-btn" href="login.php">Connect <i class='bx bx-chevron-right i' ></i> </a></li>
+                                        <?php else: ?>
+                                                <li><a href="dashboard.php"><?php echo htmlspecialchars($_SESSION["username"]); ?></a></li>
+                                                <li><a class="btn" href="logout.php">Logout <i class='bx bx-log-out o' ></i> </a></li>
+                                        <?php endif; ?>
+                                                <li><a class="playBtnNav btn" href="#Download"> Play !</a></li>
+                                 </ul>
+                        </div>
+                </div>
         </nav>
         <div class="HomeDiv">
             <section id="Home">
@@ -99,7 +93,7 @@ session_start();
                             <a href="#Download" class="playBtn btn"> <i class='bx bx-play-circle i'></i> Play</a>
                             <a href="#AboutS" class="btn">How it works?</a>
                         </div>
-                    </div>
+                        </div>
                     <img class="imgFirst" src="style/res/img1.png"/>
                 </div>
             </section>
