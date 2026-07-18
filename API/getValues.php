@@ -65,7 +65,7 @@ if ($extra === "isEnum") {
     $stmt =$conn->prepare("
             SELECT `$value`
             FROM `$table`
-        ")
+        ");
     
     $stmt->execute();
     $fresult = $stmt->get_result();
