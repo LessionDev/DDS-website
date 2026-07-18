@@ -1,4 +1,4 @@
-<?
+<?php
 require_once "API/db.php";
 
 $stmt = $conn->prepare("
@@ -12,4 +12,5 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc(); 
 
 preg_match("/^enum\((.*)\)$/", $row['Type'], $matches);
+$blogs = str_getcsv($matches[1], ',', "'");
 ?>
