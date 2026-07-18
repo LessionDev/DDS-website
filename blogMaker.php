@@ -3,13 +3,13 @@ session_start();
 require "api_client.php";
 require_once "API/db.php";
 
-$stmt = $pdo->prepare("
+$stmt = $conn->prepare("
             SELECT blogDestination
             FROM posts
             ORDER BY blogDestination ASC
             ");
-$stmt->execute();
-$blogs = $stmt->fetchALL(PDO::FETCH_ASSOC);
+$result = $stmt->get_result();
+$blogs = $result->fetch_ALL(MYSQLI_ASSOC);
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
