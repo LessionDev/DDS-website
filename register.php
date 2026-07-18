@@ -22,11 +22,11 @@ if ($_POST) {
     } elseif (($result["message"] ?? "") === "username_taken") {
         $classeTaken = 'Taken active';
     } elseif (($result["message"] ?? "") === "invalid_username") {
-        $errorMessage = "Le nom d'utilisateur doit contenir entre 3 et 20 caractères (lettres, chiffres, _ ou -).";
+        $errorMessage = "The username must contain 9 to 20 characters (letters, numbers, _ or -).";
     } elseif (($result["message"] ?? "") === "weak_password") {
-        $errorMessage = "Le mot de passe doit contenir au moins 8 caractères.";
+        $errorMessage = "The password must contain at least 8 characters.";
     } else {
-        $errorMessage = "Une erreur est survenue, réessaie plus tard.";
+        $errorMessage = "An error occured, try later.";
     }
 
 }
@@ -58,8 +58,8 @@ if ($_POST) {
                 <input name="password" type="password" placeholder="password" required>   
                 <div class="bottom">
                     <li class="<?php echo $classeTaken; ?>">Username already taken.</li>
-                                <li class="<?php echo $classeRegistered; ?>">You have been registered please go back to the login screen and log in.</li>
-                                <?php if ($errorMessage): ?><li class="Taken active"><?= htmlspecialchars($errorMessage) ?></li><?php endif; ?>
+                    <li class="<?php echo $classeRegistered; ?>">You have been registered please go back to the login screen and log in.</li>
+                    <?php if ($errorMessage): ?><li class="Taken active"><?= htmlspecialchars($errorMessage) ?></li><?php endif; ?>
                     <button class="submit" type="submit">SIGN UP</button>                 
                 </div>  
                 <div class="link">
