@@ -82,11 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         "image" => $imageName,
     ], true);
     
-    echo "<pre>";
-    var_dump($result);
-    echo "</pre>";
-    exit;
-
     if (!empty($result["success"])) {
         $message = "Article posted successfully";
     } else {
