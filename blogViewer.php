@@ -1,12 +1,5 @@
 <?php
-// AVANT : error_reporting(E_ALL) + display_errors=1 en production ->
-// n'importe quelle erreur PHP révèle des chemins serveur, des requêtes
-// SQL, parfois des identifiants, à n'importe quel visiteur. Ces réglages
-// ne doivent exister que sur un environnement de développement local,
-// jamais sur le serveur exposé publiquement.
 session_start();
-// AVANT : cette page interrogeait la base directement. MAINTENANT :
-// elle demande à l'API la liste des articles de l'utilisateur connecté.
 require "api_client.php";
 
 if (!isset($_SESSION['user_id'])) {
@@ -14,11 +7,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// AVANT : $id = $_GET['id'] venait de l'URL -> n'importe qui pouvait
-// lister les articles de N'IMPORTE QUEL auteur en changeant l'ID. On
-// n'envoie à l'API QUE l'id venant de la session ($_SESSION), jamais
-// une valeur fournie par le visiteur : impossible de le manipuler
-// depuis le navigateur puisque cet appel se fait côté serveur.
 $result = api_request("posts.php", "GET", ["author_id" => $_SESSION['user_id']]);
 $posts = $result["posts"] ?? [];
 ?>
@@ -41,13 +29,11 @@ $posts = $result["posts"] ?? [];
     </head>
     <body>
         <?php foreach ($posts as $row): ?>
-        <div class="container">
-            <div class="title">
-                <!-- AVANT : le titre était affiché sans échappement -> un titre
-                     d'article malveillant s'exécute chez chaque visiteur (XSS stocké). -->
-                <h2 class="articleLink"><?php echo htmlspecialchars($row['title']); ?></h2>
+            <div class="container">
+                <div class="title">
+                    <h2 class="articleLink"><?php echo htmlspecialchars($row['title']); ?></h2>
+                </div>
             </div>
-        </div>
         <?php endforeach; ?>     
     </body>
     <footer>
