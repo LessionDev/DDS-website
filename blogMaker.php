@@ -8,6 +8,8 @@ $stmt = $conn->prepare("
             FROM posts
             ORDER BY blogDestination ASC
             ");
+
+$stmt->execute();
 $result = $stmt->get_result();
 $blogs = $result->fetch_ALL(MYSQLI_ASSOC);
 
