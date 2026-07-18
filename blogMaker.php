@@ -2,7 +2,7 @@
 session_start();
 require "api_client.php";
 
-$blogs = api_request("API/getValues.php", "READ", [
+$blogs = api_request("getValues.php", "POST", [
         "value" => str(blogDestination) ?? "",
         "table" => posts ?? "",
         "extra" => "isEnum" ?? "",
