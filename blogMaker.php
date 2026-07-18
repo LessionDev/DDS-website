@@ -3,8 +3,9 @@ session_start();
 require "api_client.php";
 
 $blogs = api_request("API/getValues.php", "READ", [
-        "value" => blogDestination ?? "",
+        "value" => str(blogDestination) ?? "",
         "table" => posts ?? "",
+        "extra" => "isEnum" ?? "",
     ]);
 
 if ($blogs["success"]) {
