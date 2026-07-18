@@ -2,7 +2,11 @@
 session_start();
 require "api_client.php";
 
-$blogs = api_request("API/getBlogs.php", , [], true)
+$blogs = api_request("API/getBlogs.php", [], true);
+
+if ($blogs["success"]) {
+    $blogs = $blogs["blogDestination"];
+}
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
