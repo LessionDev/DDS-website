@@ -13,11 +13,11 @@ $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_ALL(MYSQLI_ASSOC);
 
-var_dump($row);
-exit;
-
 while($row = $result->fetch_assoc()) {
-    if($row['Field'] === 'blogDestination') {         
+    if($row['Field'] === 'blogDestination') {    
+            var_dump($row);
+            exit;
+                
             preg_match("/^enum\((.*)\)$/", $row['Type'], $matches);
             $blogs = str_getcsv($matches[1], ',', "'");
             break;
