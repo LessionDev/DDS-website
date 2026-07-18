@@ -10,15 +10,15 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 }
 
 $allowedTables = [
-    "users"
+    "users",
     "posts"
 ];
 
 $allowedColumns = [
-    "blogDestination"
-    "username"
+    "blogDestination",
+    "username",
     "id"
-]
+];
 
 $value = $_POST["value"] ?? "";
 $table = $_POST["table"] ?? "";
