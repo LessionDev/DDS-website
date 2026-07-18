@@ -1,26 +1,26 @@
 <?php
 session_start();
-// AVANT : cette page ouvrait la base et faisait elle-même le
-// "INSERT INTO posts". MAINTENANT : elle continue de gérer l'upload
-// du fichier (ça, ça reste local au serveur qui reçoit le fichier),
-// mais l'enregistrement en base passe par l'API (API/posts_create.php),
-// avec un secret interne pour prouver que l'appel vient bien du site.
 require "api_client.php";
+require_once "API/db.php";
+
+$stmt = $pdo->prepare("
+            SELECT blogDestination
+            FROM posts
+            ORDER BY blogDestination ASC
+            ");
+$stmt->execute();
+$blogs = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
-    exit; // AVANT : pas de exit -> le script continuait même sans session.
+    exit;
 }
 
 if ($_SESSION['user_status'] !== "author" && $_SESSION['user_status'] !== "admin") {
     header("Location: index.php");
-    exit; // AVANT : pareil ici -> un simple membre pouvait quand même publier un article.
+    exit;
 }
 
-// AVANT : $author = $_GET['author'] venait de l'URL -> n'importe quel
-// auteur pouvait publier un article au nom de QUELQU'UN D'AUTRE en
-// changeant juste "?author=12" dans le lien. L'auteur doit TOUJOURS venir
-// de la session, jamais d'une valeur fournie par le visiteur.
 $author_id = $_SESSION['user_id'];
 
 $message = "";
@@ -35,11 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Please fill the necessary informations.");
     }
 
-    // AVANT : $destination allait tel quel dans un chemin de fichier
-    // ("../style/res/blog/posts/$destination/"). Une valeur comme
-    // "../../../../var/www/html" (path traversal) permettait d'écrire
-    // des fichiers n'importe où sur le serveur. On restreint maintenant
-    // à un nom de dossier simple (lettres/chiffres/-/_).
     if (!preg_match('/^[a-zA-Z0-9_-]{1,50}$/', $destinationRaw)) {
         die("Invalid destination.");
     }
@@ -50,14 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_FILES['image']['name'])) {
         $tmpPath = $_FILES['image']['tmp_name'];
         $originalName = $_FILES['image']['name'];
-
-        // AVANT : aucune vérification -> on pouvait envoyer un fichier
-        // "shell.php" à la place d'une image. S'il atterrit dans un dossier
-        // servi par le web, l'attaquant obtient l'exécution de code sur
-        // TON serveur. On vérifie maintenant :
-        // 1) le vrai type MIME du contenu (pas juste l'extension du nom,
-        //    qui est fournie par le client et donc falsifiable),
-        // 2) qu'il s'agit bien d'une image.
         $allowedMime = [
             'image/jpeg' => 'jpg',
             'image/png'  => 'png',
@@ -72,9 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die("Only image files (jpg, png, gif, webp) are allowed.");
         }
 
-        // AVANT : le fichier gardait son nom d'origine, fourni par le
-        // client -> collisions, ou nom malicieux (ex: "../../x.php").
-        // On génère un nom aléatoire avec la bonne extension.
         $imageName = bin2hex(random_bytes(16)) . '.' . $allowedMime[$mime];
 
         $destinationDir = realpath(__DIR__ . '/style/res/blog/posts') . '/' . $destination;
@@ -84,13 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         move_uploaded_file($tmpPath, $destinationDir . '/' . $imageName);
     }
-
-    // AVANT : "INSERT INTO posts" construit par concaténation de
-    // chaînes ici même -> injection SQL possible via title/content.
-    // MAINTENANT : on demande à l'API de créer l'article. Le "true"
-    // final envoie le secret interne (X-Internal-Secret) pour prouver
-    // que l'appel vient du serveur du site et pas d'un inconnu qui
-    // appellerait /API/posts_create.php directement.
+    
     $result = api_request("posts_create.php", "POST", [
         "title" => $title,
         "content" => $content,
@@ -129,7 +107,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="post" enctype="multipart/form-data">
             <input type="text" name="title" placeholder="The title of your article">
             <textarea name="content" placeholder="Type your article here"></textarea>
-            <input type="text" name="destination" placeholder="The name of the Blog you want to post your article">
+            <label for="blogDestination">Choose the blog to posts: </label>
+            <select name="destination" id="blogDestination">
+                <?php foreach($blogs as $blogs): ?>
+                    <option value="<?= $blogs['blogDestination']; ?>">
+                        <?= htmlspecialchars($blogs['blogDestination']); ?>
+                    </select>
             <input type="file" name="image">
             <input type="submit" name="submit" value="submit your article">
         </form>   
