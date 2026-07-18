@@ -13,6 +13,9 @@ $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_ALL(MYSQLI_ASSOC);
 
+var_dump($row);
+exit;
+
 while($row = $result->fetch_assoc()) {
     if($row['Field'] === 'blogDestination') {         
             preg_match("/^enum\((.*)\)$/", $row['Type'], $matches);
