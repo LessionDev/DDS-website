@@ -4,14 +4,17 @@ require "api_client.php";
 require_once "API/db.php";
 
 $stmt = $conn->prepare("
-            SELECT blogDestination
+            SHOW COLUMNS
             FROM posts
-            ORDER BY blogDestination ASC
+            LIKE 'blogDestination'
             ");
 
 $stmt->execute();
 $result = $stmt->get_result();
-$blogs = $result->fetch_ALL(MYSQLI_ASSOC);
+$row = $result->fetch_ALL(MYSQLI_ASSOC);
+
+preg_match("/^enum\((.*)\)$/", $row['Type'], $matches);
+$blogs = str_getcsv($matches[1], ',', "'");
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
@@ -111,9 +114,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <textarea name="content" placeholder="Type your article here"></textarea>
             <label for="blogDestination">Choose the blog to posts: </label>
             <select name="destination" id="blogDestination">
-                <?php foreach($blogs as $blogs): ?>
-                    <option value="<?= $blogs['blogDestination']; ?>">
-                        <?= htmlspecialchars($blogs['blogDestination']); ?>
+                <?php foreach($blogs as $blog): ?>
+                    <option value="<?= htmlspecialchars($blog) ?>">
+                        <?= htmlspecialchars($blog) ?>
                     </option>
                 <?php endforeach; ?>.
             </select>
