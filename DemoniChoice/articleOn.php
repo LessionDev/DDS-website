@@ -7,7 +7,7 @@ session_start();
 require "../api_client.php";
 
 $post_id = intval($_GET['post_id'] ?? 0);
-$result = api_request("getValues.php", "READ", [
+$result = api_request("getValues.php", "POST", [
     "value" => $post_id ?? "",
     "table" => "posts" ?? "",
     "extra" => "getPostById" ?? ""
