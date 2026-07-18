@@ -2,8 +2,6 @@
 session_start();
 require "api_client.php";
 
-$blogs = str_getcsv($matches[1], ',', "'");
-
 $blogs = api_request("API/getBlogs.php", , [], true)
 
 if (!isset($_SESSION['user_id'])) {
