@@ -112,7 +112,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php foreach($blogs as $blogs): ?>
                     <option value="<?= $blogs['blogDestination']; ?>">
                         <?= htmlspecialchars($blogs['blogDestination']); ?>
-                    </select>
+                    </option>
+                <?php endforeach; ?>.
+            </select>
             <input type="file" name="image">
             <input type="submit" name="submit" value="submit your article">
         </form>   
