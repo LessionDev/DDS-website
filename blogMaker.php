@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <option value="<?= htmlspecialchars($blog) ?>">
                         <?= htmlspecialchars($blog) ?>
                     </option>
-                <?php endforeach; ?>.
+                <?php endforeach; ?>
             </select>
             <input type="file" name="image">
             <input type="submit" name="submit" value="submit your article">
