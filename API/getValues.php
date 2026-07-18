@@ -19,6 +19,7 @@ $allowedColumns = [
     "username",
     "id",
     "image",
+    "title",
     "content",
     "author_id"
 ];
