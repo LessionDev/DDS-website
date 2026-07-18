@@ -22,7 +22,7 @@ if ($_POST) {
     } elseif (($result["message"] ?? "") === "username_taken") {
         $classeTaken = 'Taken active';
     } elseif (($result["message"] ?? "") === "invalid_username") {
-        $errorMessage = "The username must contain 9 to 20 characters (letters, numbers, _ or -).";
+        $errorMessage = "The username must contain 3 to 20 characters (letters, numbers, _ or -).";
     } elseif (($result["message"] ?? "") === "weak_password") {
         $errorMessage = "The password must contain at least 8 characters.";
     } else {
