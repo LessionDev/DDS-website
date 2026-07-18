@@ -12,8 +12,9 @@ $stmt = $conn->prepare("
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc(); 
-var_dump($row);
-exit;
+
+preg_match("/^enum\((.*)\)$/", $row['Type'], $matches);
+$blogs = str_getcsv($matches[1], ',', "'");
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
