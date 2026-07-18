@@ -8,9 +8,9 @@ require "../api_client.php";
 
 $post_id = intval($_GET['post_id'] ?? 0);
 $result = api_request("getValues.php", "READ", [
-    "value" => $post_id,
-    "table" => "posts",
-    "extra" => "getPostById"
+    "value" => $post_id ?? "",
+    "table" => "posts" ?? "",
+    "extra" => "getPostById" ?? ""
     ]);
 
 if (empty($result["success"])) {
