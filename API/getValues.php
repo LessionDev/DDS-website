@@ -71,7 +71,7 @@ if ($extra === "isEnum") {
     
     $fresult = str_getcsv($matches[1], ',', "'");
 
-} elseif($extra === "getPostById") {
+} elseif($extra === "getPostsById") {
 
     $stmt = $conn->prepare("SELECT id, title, content, image, author_id, blogDestination FROM posts WHERE id = ?");
     $stmt->bind_param("i", $value);
@@ -104,8 +104,34 @@ if ($extra === "isEnum") {
         "nextId" => $nextId,
     ];
 
-} elseif($extra === "postFromAuthorId") {
+} elseif ($extra === "getPostByAuthorId") {
 
+    if ($value === "") {
+        http_response_code(400);
+        echo json_encode([
+            "success" => false,
+            "message" => "Missing author_id"
+        ]);
+        exit;
+    }
+
+    $authorId = intval($value);
+    $stmt = $conn->prepare("
+        SELECT id, title, image
+        FROM posts
+        WHERE author_id = ?
+        ORDER BY id DESC
+    ");
+
+    $stmt->bind_param("i", $authorId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $fresult = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $fresult[] = $row;
+    }
+    
 } else {
 
     $stmt = $conn->prepare("
@@ -122,10 +148,16 @@ if ($extra === "isEnum") {
     }
 }
 
-if($fresult) {
-    echo json_encode(["success" => true, "values" => $fresult]);
+if (isset($fresult)) {
+    echo json_encode([
+        "success" => true,
+        "values" => $fresult
+    ]);
 } else {
-    echo json_encode(["success" => false, "message" => "Couldn't get the value/s needed"]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Couldn't get the value/s needed"
+    ]);
 }
 
 ?>
