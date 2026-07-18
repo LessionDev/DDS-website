@@ -73,6 +73,37 @@ if ($extra === "isEnum") {
 
 } elseif($extra === "postFromId") {
 
+    $stmt = $conn->prepare("SELECT id, title, content, image, author_id, blogDestination FROM posts WHERE id = ?");
+    $stmt->bind_param("i", $value);
+    $stmt->execute();
+    $post = $stmt->get_result()->fetch_assoc();
+
+    if (!$post) {
+        http_response_code(404);
+        die(json_encode(["success" => false, "message" => "Not found"]));
+    }
+
+    $prevId = $value - 1;
+    $nextId = $value + 1;
+
+    $stmt = $conn->prepare("SELECT id FROM posts WHERE id = ?");
+    $stmt->bind_param("i", $prevId);
+    $stmt->execute();
+    $hasPrev = $stmt->get_result()->num_rows > 0;
+
+    $stmt->bind_param("i", $nextId);
+    $stmt->execute();
+    $hasNext = $stmt->get_result()->num_rows > 0;
+
+    $fresult = [
+        "success" => true,
+        "post" => $post,
+        "hasPrev" => $hasPrev,
+        "prevId" => $prevId,
+        "hasNext" => $hasNext,
+        "nextId" => $nextId,
+    ];
+
 } elseif($extra === "postFromAuthorId") {
 
 } else {
