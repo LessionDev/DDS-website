@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
 $value = $_POST["value"] ?? "";
 $table = $_POST["table"] ?? "";
-&extra = $_POST["extra"] ?? "";
+$extra = $_POST["extra"] ?? "";
 
 if ($value === "" || $table === "") {
     http_response_code(400);
@@ -23,10 +23,11 @@ if ($extra === "isEnum") {
 
     $stmt = $conn->prepare("
             SHOW COLUMNS
-            FROM posts
-            LIKE 'blogDestination'
+            FROM ??
+            LIKE ??
             ");
 
+    $stmt->bind_param("ss", $table, $value);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc(); 
@@ -36,6 +37,8 @@ if ($extra === "isEnum") {
 
 } else {
     $stmt =$conn->prepare("
+            FROM ??
+            
         ")
 }
 
