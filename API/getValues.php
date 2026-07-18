@@ -71,7 +71,7 @@ if ($extra === "isEnum") {
     
     $fresult = str_getcsv($matches[1], ',', "'");
 
-} elseif($extra === "getPostsById") {
+} elseif($extra === "getPostById") {
 
     $stmt = $conn->prepare("SELECT id, title, content, image, author_id, blogDestination FROM posts WHERE id = ?");
     $stmt->bind_param("i", $value);
@@ -104,7 +104,7 @@ if ($extra === "isEnum") {
         "nextId" => $nextId,
     ];
 
-} elseif ($extra === "getPostByAuthorId") {
+} elseif ($extra === "getPostsByAuthorId") {
 
     if ($value === "") {
         http_response_code(400);
