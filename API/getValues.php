@@ -59,6 +59,8 @@ if ($extra === "isEnum") {
         exit;
     }
     
+    preg_match("/^enum\((.*)\)$/i", $row['Type'], $matches);
+    
     if (!isset($matches[1])) {
         echo json_encode([
             "success" => false,
@@ -66,8 +68,7 @@ if ($extra === "isEnum") {
         ]);
         exit;
     }
-
-    preg_match("/^enum\((.*)\)$/i", $row['Type'], $matches);
+    
     $fresult = str_getcsv($matches[1], ',', "'");
 
 } else {
