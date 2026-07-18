@@ -9,27 +9,40 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-$username = $_POST["blogDestination"] ?? "";
-$password = $_POST["password"] ?? "";
+$value = $_POST["value"] ?? "";
+$table = $_POST["table"] ?? "";
+&extra = $_POST["extra"] ?? "";
 
-if ($username === "" || $password === "") {
+if ($value === "" || $table === "") {
     http_response_code(400);
-    echo json_encode(["success" => false, "message" => "Missing credentials"]);
+    echo json_encode(["success" => false, "message" => "Missing wanted value or location"]);
     exit;
 }
 
-$stmt = $conn->prepare("
+if ($extra === "isEnum") {
+
+    $stmt = $conn->prepare("
             SHOW COLUMNS
             FROM posts
             LIKE 'blogDestination'
             ");
 
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc(); 
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc(); 
 
-preg_match("/^enum\((.*)\)$/i", $row['Type'], $matches);
-$blogs = str_getcsv($matches[1], ',', "'");
+    preg_match("/^enum\((.*)\)$/i", $row['Type'], $matches);
+    $fresult = str_getcsv($matches[1], ',', "'");
 
-echo json_encode(["success" => true, "blogDestination" => $blogs]);
+} else {
+    $stmt =$conn->prepare("
+        ")
+}
+
+if($fresult) {
+    echo json_encode(["success" => true, "value/s" => $fresult]);
+} else {
+    echo json_encode(["success" => false, "message" => "Couldn't get the value/s needed"]);
+}
+
 ?>
