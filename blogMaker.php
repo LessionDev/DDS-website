@@ -2,7 +2,7 @@
 session_start();
 require "api_client.php";
 
-$blogs = api_request("API/getBlogs.php", [], true);
+$blogs = api_request("API/getValues.php", "GET", ['blogDestination'], true);
 
 if ($blogs["success"]) {
     $blogs = $blogs["blogDestination"];
