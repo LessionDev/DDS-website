@@ -1,10 +1,4 @@
 <?php
-// AVANT : cette page insérait elle-même le nouvel utilisateur dans la
-// base. MAINTENANT : elle appelle l'API (API/register.php), qui est
-// la seule à écrire dans la table "users". La validation (format du
-// pseudo, longueur du mot de passe) est maintenant faite côté API,
-// donc elle s'applique aussi si le launcher appelle un jour cette
-// route directement.
 require "api_client.php";
 require "safe_redirect.php";
 
