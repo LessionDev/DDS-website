@@ -4,7 +4,7 @@ require "api_client.php";
 
 $blogs = str_getcsv($matches[1], ',', "'");
 
-$blogs = api_client("API/getBlogs.php", [], true)
+$blogs = api_request("API/getBlogs.php", , [], true)
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
