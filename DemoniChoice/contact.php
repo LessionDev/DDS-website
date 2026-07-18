@@ -85,7 +85,7 @@ session_start();
                 <li class="contactTitle">You can contact us with the following :</li>
                 <li class="contactLink">- The discord server <a class="contactLink" href="https://discord.com/">here.</a></li>
                 <li class="contactLink">- The mailbox system by sending a message to any 'admin' tagged person.<br>
-                    You can acces the mailbox system <a class="contactLink" href="../mailbox.php">here.</a>
+                    You can acces the mailbox system <a class="contactLink" href="../Mailbox/mailbox.php">here.</a>
                 </li>
                 <li class="contactLink">- By sending us an email at : 'no one currently'</li>
             </ul>
