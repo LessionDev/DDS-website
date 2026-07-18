@@ -9,7 +9,7 @@ $blogs = api_request("API/getValues.php", "READ", [
     ]);
 
 if ($blogs["success"]) {
-    $blogs = $blogs["blogDestination"];
+    $blogs = $blogs["values"];
 }
 
 if (!isset($_SESSION['user_id'])) {
