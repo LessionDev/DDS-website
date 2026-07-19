@@ -120,8 +120,6 @@ if ($extra === "isEnum") {
     }
 
     $authorId = intval($value);
-    var_dump($authorId);
-    die();
     
     $stmt = $conn->prepare("
         SELECT id, title, image
