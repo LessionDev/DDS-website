@@ -120,7 +120,15 @@ if ($extra === "isEnum") {
     }
     
     $destination = intval($value);
+    
+    $stmt = $conn->prepare("
+        SELECT id, title, image
+        FROM posts
+        WHERE blogDestination = ?
+        ORDER BY id DESC
+    ");
 
+    $stmt->bind_param("s", $destination);
     $stmt->execute();
     $result = $stmt->get_result();
     $fresult = [];
