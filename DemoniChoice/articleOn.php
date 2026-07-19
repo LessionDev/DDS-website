@@ -12,6 +12,16 @@ $result = api_request("getValues.php", "POST", [
     "table" => "posts" ?? "",
     "extra" => "getPostById" ?? ""
     ]);
+    
+    echo "<pre>";
+
+var_dump($post_id);
+
+var_dump($result);
+
+echo "</pre>";
+
+exit;
 
 if (empty($result["success"])) {
     http_response_code(404);
