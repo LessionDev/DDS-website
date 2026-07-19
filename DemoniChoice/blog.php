@@ -11,6 +11,9 @@ $result = api_request("getValues.php", "POST", [
     "extra" => "getPostsByBlog"
     ]);
 $posts = $result["values"] ?? [];
+
+var_dump($posts);
+exit;
 ?>
 <!DOCTYPE html>
 <html>
