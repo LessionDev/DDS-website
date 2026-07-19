@@ -69,16 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $imagePath = $destinationDir . '/' . $imageName;
 
-        var_dump([
-            'tmp exists' => file_exists($tmpPath),
-            'tmp readable' => is_readable($tmpPath),
-            'destinationDir' => $destinationDir,
-            'dir exists' => is_dir($destinationDir),
-            'dir writable' => is_writable($destinationDir),
-            'imagePath' => $imagePath
-        ]);
-        exit;
-
         if (!move_uploaded_file($tmpPath, $imagePath)) {
             die("Upload failed");
         }
