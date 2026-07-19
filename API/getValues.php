@@ -119,7 +119,7 @@ if ($extra === "isEnum") {
         exit;
     }
     
-    $destination = intval($value);
+    $destination = $value;
     
     $stmt = $conn->prepare("
         SELECT id, title, image
