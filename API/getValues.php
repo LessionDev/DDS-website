@@ -120,6 +120,7 @@ if ($extra === "isEnum") {
     }
     
     $destination = $value;
+    var_dump($destination);
     
     $stmt = $conn->prepare("
         SELECT id, title, image
@@ -131,6 +132,8 @@ if ($extra === "isEnum") {
     $stmt->bind_param("s", $destination);
     $stmt->execute();
     $result = $stmt->get_result();
+    var_dump($result);
+    die;
     $fresult = [];
     while ($row = $result->fetch_assoc()) {
         $fresult[] = $row;
