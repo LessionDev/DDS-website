@@ -144,8 +144,6 @@ if ($extra === "isEnum") {
     $stmt->bind_param("s", $destination);
     $stmt->execute();
     $result = $stmt->get_result();
-    var_dump($result->num_rows);
-    die;
     $fresult = [];
     while ($row = $result->fetch_assoc()) {
         $fresult[] = $row;
