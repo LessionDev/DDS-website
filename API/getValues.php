@@ -29,6 +29,7 @@ $table = $_POST["table"] ?? "";
 $extra = $_POST["extra"] ?? "";
 
 var_dump($value);
+var_dump(gettype($value));
 var_dump(is_int($value));
 die();
 
