@@ -28,18 +28,13 @@ $value = $_POST["value"] ?? "";
 $table = $_POST["table"] ?? "";
 $extra = $_POST["extra"] ?? "";
 
-var_dump($value);
-var_dump(gettype($value));
-var_dump(is_int($value));
-die();
-
 if ($value === "" || $table === "") {
     http_response_code(400);
     echo json_encode(["success" => false, "message" => "Missing wanted value or location"]);
     exit;
 }
 
-if (!in_array($table, $allowedTables) || ( !in_array($value, $allowedColumns) && !is_int($value))) {
+if (!in_array($table, $allowedTables) || ( !in_array($value, $allowedColumns) && filter_var($value, FILTER_VALIDATE_INT) === false)) {
     http_response_code(400);
     echo json_encode([
         "success" => false,
