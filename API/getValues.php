@@ -108,6 +108,8 @@ if ($extra === "isEnum") {
         "nextId" => $nextId,
     ];
 
+} elseif($extra === "getPostsByBlog") {
+    
 } elseif ($extra === "getPostsByAuthorId") {
 
     if ($value === "") {
