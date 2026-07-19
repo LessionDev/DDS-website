@@ -18,11 +18,11 @@ if (empty($result["success"])) {
     die("Article introuvable.");
 }
 
-$row = $result["post"];
-$hasPrev = $result["hasPrev"];
-$prevId = $result["prevId"];
-$hasNext = $result["hasNext"];
-$nextId = $result["nextId"];
+$row = $result["values"]["post"];
+$hasPrev = $result["values"]["hasPrev"];
+$prevId = $result["values"]["prevId"];
+$hasNext = $result["values"]["hasNext"];
+$nextId = $result["values"]["nextId"];
 ?>
 <!DOCTYPE html>
 <html>
