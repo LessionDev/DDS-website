@@ -34,7 +34,7 @@ if ($value === "" || $table === "") {
     exit;
 }
 
-if (!in_array($table, $allowedTables) || !in_array($value, $allowedColumns)) {
+if (!in_array($table, $allowedTables) ||  !in_array($value, $allowedColumns) && !is_int($value)) {
     http_response_code(400);
     echo json_encode([
         "success" => false,
