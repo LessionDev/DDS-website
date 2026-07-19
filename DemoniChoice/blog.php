@@ -5,8 +5,12 @@ session_start();
 // l'API, exactement comme le fera le launcher plus tard.
 require "../api_client.php";
 
-$result = api_request("posts.php", "GET", ["destination" => "demonichoice"]);
-$posts = $result["posts"] ?? [];
+$result = api_request("getValues.php", "POST", [
+    "value" => "demonichoice",
+    "table" => "posts",
+    "extra" => "getPostsByBlog"
+    ]);
+$posts = $result["values"] ?? [];
 ?>
 <!DOCTYPE html>
 <html>
