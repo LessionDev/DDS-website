@@ -110,6 +110,24 @@ if ($extra === "isEnum") {
 
 } elseif($extra === "getPostsByBlog") {
     
+    if ($value === "") {
+        http_response_code(400);
+        echo json_encode([
+            "success" => false,
+            "message" => "Missing blog value"
+        ]);
+        exit;
+    }
+    
+    $destination = intval($value);
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $fresult = [];
+    while ($row = $result->fetch_assoc()) {
+        $fresult[] = $row;
+    }
+    
 } elseif ($extra === "getPostsByAuthorId") {
 
     if ($value === "") {
