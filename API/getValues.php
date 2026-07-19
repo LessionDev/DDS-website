@@ -14,8 +14,9 @@ $allowedTables = [
     "posts"
 ];
 
-$allowedColumns = [
+$allowedColumnsOrValues = [
     "blogDestination",
+    "demonichoice",
     "username",
     "id",
     "image",
@@ -34,7 +35,7 @@ if ($value === "" || $table === "") {
     exit;
 }
 
-if (!in_array($table, $allowedTables) || ( !in_array($value, $allowedColumns) && filter_var($value, FILTER_VALIDATE_INT) === false)) {
+if (!in_array($table, $allowedTables) || ( !in_array($value, $allowedColumnsOrValues) && filter_var($value, FILTER_VALIDATE_INT) === false)) {
     http_response_code(400);
     echo json_encode([
         "success" => false,
