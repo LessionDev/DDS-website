@@ -14,15 +14,19 @@ $allowedTables = [
     "posts"
 ];
 
-$allowedColumnsOrValues = [
+$allowedColumns = [
     "blogDestination",
-    "demonichoice",
     "username",
     "id",
     "image",
     "title",
     "content",
     "author_id"
+];
+
+$allowedBlogDestinations = [
+    "demonichoice",
+    "dds"
 ];
 
 $value = $_POST["value"] ?? "";
@@ -35,11 +39,11 @@ if ($value === "" || $table === "") {
     exit;
 }
 
-if (!in_array($table, $allowedTables) || ( !in_array($value, $allowedColumnsOrValues) && filter_var($value, FILTER_VALIDATE_INT) === false)) {
+if (!in_array($table, $allowedTables) ) {
     http_response_code(400);
     echo json_encode([
         "success" => false,
-        "message" => "Invalid table or column"
+        "message" => "Invalid table"
     ]);
     exit;
 }
@@ -77,6 +81,14 @@ if ($extra === "isEnum") {
     $fresult = str_getcsv($matches[1], ',', "'");
 
 } elseif($extra === "getPostById") {
+    
+    if (filter_var($value, FILTER_VALIDATE_INT) === false || $value === "") {
+        echo json_encode([
+            "success" => false,
+            "message" => "Did not provided an id."
+        ]);
+        exit;
+    }
 
     $stmt = $conn->prepare("SELECT id, title, content, image, author_id, blogDestination FROM posts WHERE id = ?");
     $stmt->bind_param("i", $value);
@@ -111,17 +123,16 @@ if ($extra === "isEnum") {
 
 } elseif($extra === "getPostsByBlog") {
     
-    if ($value === "") {
+    if (!in_array($value, $allowedBlogDestinations, true) || $value === "") {
         http_response_code(400);
         echo json_encode([
             "success" => false,
-            "message" => "Missing blog value"
+            "message" => "Did not provided an available blog name."
         ]);
         exit;
     }
     
     $destination = $value;
-    var_dump($destination);
     
     $stmt = $conn->prepare("
         SELECT id, title, image
@@ -133,7 +144,7 @@ if ($extra === "isEnum") {
     $stmt->bind_param("s", $destination);
     $stmt->execute();
     $result = $stmt->get_result();
-    var_dump($result);
+    var_dump($result->num_rows);
     die;
     $fresult = [];
     while ($row = $result->fetch_assoc()) {
@@ -142,14 +153,14 @@ if ($extra === "isEnum") {
     
 } elseif ($extra === "getPostsByAuthorId") {
 
-    if ($value === "") {
-        http_response_code(400);
+    if (filter_var($value, FILTER_VALIDATE_INT) === false || $value === "") {
         echo json_encode([
             "success" => false,
-            "message" => "Missing author_id"
+            "message" => "Did not provided an id."
         ]);
         exit;
     }
+
 
     $authorId = intval($value);
     
