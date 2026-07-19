@@ -95,7 +95,7 @@ $posts = $result["values"] ?? [];
                 <!-- AVANT : $row['image'] et $row['title'] affichés sans
                      échappement -> XSS stocké possible via un titre malveillant
                      créé par un auteur compromis ou malintentionné. -->
-                <div class="article" style="background-image: url('../style/res/blog/posts/demonichoice/<?= $row['image']) ?>');">
+                <div class="article" style="background-image: url('../style/res/blog/posts/demonichoice/<?= $row['image'] ?>');">
                 <div class="title">
                         <a class="articleLink" href="articleOn.php?post_id=<?php echo (int) $row['id']; ?>"> <?php echo htmlspecialchars($row['title']); ?> </a>
                 </div>
