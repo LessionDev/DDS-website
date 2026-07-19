@@ -28,6 +28,10 @@ $value = $_POST["value"] ?? "";
 $table = $_POST["table"] ?? "";
 $extra = $_POST["extra"] ?? "";
 
+var_dump($value);
+var_dump(is_int($value));
+die();
+
 if ($value === "" || $table === "") {
     http_response_code(400);
     echo json_encode(["success" => false, "message" => "Missing wanted value or location"]);
