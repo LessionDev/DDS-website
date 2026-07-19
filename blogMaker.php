@@ -44,6 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $imageName = null;
 
     if (!empty($_FILES['image']['name'])) {
+        var_dump($_FILES['image']);
+        exit;
         $tmpPath = $_FILES['image']['tmp_name'];
         $originalName = $_FILES['image']['name'];
         $allowedMime = [
@@ -62,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $imageName = bin2hex(random_bytes(16)) . '.' . $allowedMime[$mime];
 
-        $destinationDir = realpath(__DIR__ . '/style/res/blog/posts') . '/' . $destination;
+        $destinationDir = __DIR__ . '/style/res/blog/posts/' . $destination;
         if (!is_dir($destinationDir)) {
             mkdir($destinationDir, 0755, true);
         }
