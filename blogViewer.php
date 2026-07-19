@@ -12,6 +12,17 @@ $result = api_request("getValues.php", "POST", [
     "extra" => "getPostsByAuthorId"
     ]);
 $posts = $result["posts"] ?? [];
+
+echo "<pre>";
+
+var_dump($_SESSION['user_id']);
+
+var_dump($posts);
+
+echo "</pre>";
+
+exit;
+
 ?>
 <!DOCTYPE html>
 <html>
