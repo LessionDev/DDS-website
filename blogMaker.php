@@ -44,8 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $imageName = null;
 
     if (!empty($_FILES['image']['name'])) {
-        var_dump($_FILES['image']);
-        exit;
         $tmpPath = $_FILES['image']['tmp_name'];
         $originalName = $_FILES['image']['name'];
         $allowedMime = [
@@ -70,6 +68,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $imagePath = $destinationDir . '/' . $imageName;
+
+        var_dump([
+            'tmp exists' => file_exists($tmpPath),
+            'tmp readable' => is_readable($tmpPath),
+            'destinationDir' => $destinationDir,
+            'dir exists' => is_dir($destinationDir),
+            'dir writable' => is_writable($destinationDir),
+            'imagePath' => $imagePath
+        ]);
+        exit;
 
         if (!move_uploaded_file($tmpPath, $imagePath)) {
             die("Upload failed");
